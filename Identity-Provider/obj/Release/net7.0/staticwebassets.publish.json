@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "TcK90gApo/IM4MQB04Ao3U7bZObZi+xjPokJrh1T+5M=",
+  "Source": "IdentityProvider",
+  "BasePath": "_content/IdentityProvider",
+  "Mode": "Default",
+  "ManifestType": "Publish",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "O9smGpg9rP+kltCYNyjHZt4SaQAY8s6SGU/Vo37h/tGAMKADYpIlgr/Zpz/WRKXPvQCSumZ8gN31xUQmUsY9+Q==",
+  "dgSpecHash": "NOR4xG0W4m0JS1zqSdeuzVrXrDu4POQ4+xrpfoS6wqOFNfa09z+bcCBycULGJWh17DLLHtq9U/udQunVeClu9Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Identity-Provider\\IdentityProvider.csproj",
+  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Identity-Provider\\IdentityProvider.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

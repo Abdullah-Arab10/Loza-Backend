@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Domain\\Loza.Domain.csproj": {}
+    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Domain\\Loza.Domain.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Domain\\Loza.Domain.csproj": {
+    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Domain\\Loza.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Domain\\Loza.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Domain\\Loza.Domain.csproj",
         "projectName": "Loza.Domain",
-        "projectPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Domain\\Loza.Domain.csproj",
+        "projectPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Domain\\Loza.Domain.csproj",
         "packagesPath": "C:\\Users\\Abdulrhman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Domain\\obj\\",
+        "outputPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Abdulrhman\\AppData\\Roaming\\NuGet\\NuGet.Config",

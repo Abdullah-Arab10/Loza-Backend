@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "JicoUUqyOXGcXAOiX92t0lSG4dstY/SsJU3tVNB0GTH1qidV9FGcR3ZBENHWjwLCFnkc5qr0U8PpzdCvphmJuQ==",
+  "dgSpecHash": "mLgo+Q06hTgaV+mZ9sNEgDYrcaxa5mTudHKBn/jk+Vy4CWsngFemlea8R22sDtA0KcYY1aS1WJ38R79E66ps/g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\API\\Loza.API.csproj",
+  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\API\\Loza.API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",

@@ -10,3 +10,15 @@ C:\Users\Abdulrhman\Desktop\Projects\Loza\Domain\obj\Debug\net7.0\Loza.Domain.dl
 C:\Users\Abdulrhman\Desktop\Projects\Loza\Domain\obj\Debug\net7.0\refint\Loza.Domain.dll
 C:\Users\Abdulrhman\Desktop\Projects\Loza\Domain\obj\Debug\net7.0\Loza.Domain.pdb
 C:\Users\Abdulrhman\Desktop\Projects\Loza\Domain\obj\Debug\net7.0\ref\Loza.Domain.dll
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\bin\Debug\net7.0\Loza.Domain.deps.json
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\bin\Debug\net7.0\Loza.Domain.dll
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\bin\Debug\net7.0\Loza.Domain.pdb
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.csproj.AssemblyReference.cache
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.AssemblyInfoInputs.cache
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.AssemblyInfo.cs
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.csproj.CoreCompileInputs.cache
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.dll
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\refint\Loza.Domain.dll
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\Loza.Domain.pdb
+C:\Users\Abdulrhman\Desktop\Projects\Loza-Backend\Domain\obj\Debug\net7.0\ref\Loza.Domain.dll

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Identity-Provider\\IdentityProvider.csproj": {}
+    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Identity-Provider\\IdentityProvider.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Identity-Provider\\IdentityProvider.csproj": {
+    "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Identity-Provider\\IdentityProvider.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Identity-Provider\\IdentityProvider.csproj",
+        "projectUniqueName": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Identity-Provider\\IdentityProvider.csproj",
         "projectName": "IdentityProvider",
-        "projectPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Identity-Provider\\IdentityProvider.csproj",
+        "projectPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Identity-Provider\\IdentityProvider.csproj",
         "packagesPath": "C:\\Users\\Abdulrhman\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Identity-Provider\\obj\\",
+        "outputPath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Identity-Provider\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Abdulrhman\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kUyosNbZHAmTb5vTAbQD/g7mHuPxZe71aa8QOmTMoVi122kFjp24Jud52uoePtdB0Q0zasQJhv7RFkz3XiS/9Q==",
+  "dgSpecHash": "GDDPm00pYpq00i5yCofBOTXrE5ExLo+avpMtDl7DyAGpcf1v3DLpoPQbVEp9FeFmj7bblvU6ydW2tzqK+5UAQQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Domain\\Loza.Domain.csproj",
+  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Domain\\Loza.Domain.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\fluentvalidation\\11.5.1\\fluentvalidation.11.5.1.nupkg.sha512"
   ],

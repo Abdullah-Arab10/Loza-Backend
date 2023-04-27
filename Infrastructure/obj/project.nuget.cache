@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "pLDvLD3axl66/sfhjF+Xi6ZWhRyyj4SsdAMjMR/EIf/TmOriKSMowRDlCWCV/CH7OSR5G/PW0haJUY/cBVyGHw==",
+  "dgSpecHash": "MBeo2K4GUuT2H3gOWun+4O3P6AZZGHdClFVKM5ZQZHZHlimW/EO2ukbN37yFjKyDzXGXeJe4+sbv96uGhgOFuA==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza\\Infrastructure\\Loza.Infrastructure.csproj",
+  "projectFilePath": "C:\\Users\\Abdulrhman\\Desktop\\Projects\\Loza-Backend\\Infrastructure\\Loza.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Abdulrhman\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

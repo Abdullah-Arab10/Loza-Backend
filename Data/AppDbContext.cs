@@ -10,7 +10,7 @@ namespace Loza.Data
 {
     public class AppDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options):base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }
@@ -46,6 +46,6 @@ namespace Loza.Data
             base.OnModelCreating(builder);
 
         }
-       
+
     }
 }

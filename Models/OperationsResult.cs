@@ -2,7 +2,9 @@
 {
     public class OperationsResult
     {
+        public int statusCode { get; set; }
+        public bool isError { get; set; }
         public List<object> Data { get; set; } = new List<object>();
-        public List<ErrorModel> Errors { get; set; } = new List<ErrorModel>();
+        public ErrorModel Errors { get; set; } = new ErrorModel();
     }
 }

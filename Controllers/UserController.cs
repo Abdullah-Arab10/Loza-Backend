@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Loza.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -37,36 +37,52 @@ namespace Loza.Controllers
 
             if (user == null || user.Count == 0)
             {
-                response.Errors.Add(new ErrorModel { Message = "No users to list" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No users to list" }
+                });
             }
-
             response.Data.AddRange(user);
-            return Ok(response);
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data = response.Data
+            });
         }
         [HttpGet("Get_by_Id/{Id}")]
         public ActionResult<User> GetById(int Id)
         {
-            //var user = _context.users.FirstOrDefault(u => u.Id == Id);
             var user = _context.users.Where(u => u.Id == Id).Select(u => new UserGetById
             {
                 Id = u.Id,
                 FirstName = u.FirstName,
                 LastName = u.LastName,
+                Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
-                DateOfBirth = u.DateOfBirth
+                DateOfBirth = u.DateOfBirth,
+                Address = u.Address
             }).ToList();
 
             var response = new OperationsResult();
-
             if (user.Count == 0)
             {
-                response.Errors.Add(new ErrorModel { Message = "User not found" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "User not found" } 
+                });
             }
-
             response.Data.AddRange(user);
-            return Ok(response);
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data = response.Data
+            });
         }
         [HttpGet("Search/{search}")]
         public ActionResult<IEnumerable<User>> Search(string search)
@@ -88,22 +104,33 @@ namespace Loza.Controllers
 
             if (users.Count == 0)
             {
-                response.Errors.Add(new ErrorModel { Message = "User not found" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "User not found" }
+                });
             }
 
-            response.Data.AddRange(users);
-            return Ok(response);
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data = { users }
+            });
         }
         [HttpDelete("Delete/{Id}")]
         public async Task<IActionResult> DeleteUser(int Id)
         {
             var user = await _context.Users.FindAsync(Id);
-            var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "Not Found" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "Not Found" }
+                });
             }
 
             _context.Users.Remove(user);
@@ -115,11 +142,14 @@ namespace Loza.Controllers
         public async Task<IActionResult> AddMoneyToUser(int Id, int cash)
         {
             var user = _context.Users.Find(Id);
-            var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "User not found" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "User not found" }
+                });
             }
             user.Wallet += cash;
             await _context.SaveChangesAsync();

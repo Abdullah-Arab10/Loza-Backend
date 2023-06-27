@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -41,11 +42,12 @@ namespace Loza.Controllers
                 var response = new OperationsResult();
                 if (user_exist != null)
                 {
-                    response.Errors.Add(new ErrorModel
+                    return BadRequest(new OperationsResult
                     {
-                        Message = "Email already exist"
+                        statusCode = 400,
+                        isError = true,
+                        Errors = new ErrorModel { Message = "Email already exist" }
                     });
-                    return BadRequest(response);
                 }
                 //create a user 
                 var new_user = new User()
@@ -66,7 +68,11 @@ namespace Loza.Controllers
                     var result = await _userManager.AddToRoleAsync(new_user, "User");
                     if (result.Succeeded)
                     {
-                        return Ok("User registered successfully");
+                        return Ok(new OperationsResult
+                        {
+                            statusCode = 200,
+                            isError = false
+                        });
                     }
                     return BadRequest();
                 }
@@ -76,8 +82,12 @@ namespace Loza.Controllers
                 {
                     errors.Add(error.Description);
                 }
-                response.Errors.Add(new ErrorModel { Message = string.Join(",", errors) });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode= 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message= string.Join(",", errors) }
+                });
             }
 
             return BadRequest();
@@ -95,17 +105,22 @@ namespace Loza.Controllers
                 var response = new OperationsResult();
                 if (user == null)
                 {
-                    response.Errors.Add(new ErrorModel
+                    return BadRequest(new OperationsResult
                     {
-                        Message = "Wrong Email"
+                        statusCode = 400,
+                        isError= true,
+                        Errors = new ErrorModel { Message = "Wrong Email" }
                     });
-                    return BadRequest(response);
                 }
                 var isCorrect = await _userManager.CheckPasswordAsync(user, loginRequest.Password);
                 if (!isCorrect)
                 {
-                    response.Errors.Add(new ErrorModel { Message = "Wrong Password" });
-                    return Unauthorized(response);
+                    return Unauthorized(new OperationsResult
+                    {
+                        statusCode = 401,
+                        isError= true,
+                        Errors = new ErrorModel { Message = "Wrong Password" }
+                    });
                 }
                 var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -125,19 +140,21 @@ namespace Loza.Controllers
                 }
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JwtConfig:Secret").Value));
 
-                var token = new JwtSecurityToken(
+                var new_token = new JwtSecurityToken(
                     expires: DateTime.Now.AddHours(3),
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
-                var jwtToken = new JwtSecurityTokenHandler().WriteToken(token);
-                //var iwtToken = GenerateJwtToken(existing_user);
-                response.Data.Add(jwtToken);
-                return Ok(response);
+                var jwtToken = new JwtSecurityTokenHandler().WriteToken(new_token);
+                
+                return Ok(new LoginResult
+                {
+                    statusCode= 200,
+                    isError= false,
+                    Data =  new tokenResponse { token = jwtToken } 
+                });
 
             }
             return StatusCode(StatusCodes.Status500InternalServerError);
-
-
         }
 
         //[Authorize]
@@ -149,8 +166,12 @@ namespace Loza.Controllers
             var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "Email does not exist" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors =  new ErrorModel { Message = "Email does not exist" } 
+                });
             }
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
 
@@ -161,8 +182,12 @@ namespace Loza.Controllers
                 {
                     errors.Add(error.Description);
                 }
-                response.Errors.Add(new ErrorModel { Message = string.Join(",", errors) });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 401,
+                    isError = true,
+                    Errors =  new ErrorModel { Message = string.Join(",", errors) } 
+                });
             }
             return Ok("Password changed successfuly");
         }
@@ -175,8 +200,12 @@ namespace Loza.Controllers
             var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "User not Found " });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "User not Found " } 
+                });
             }
             user.SecurityStamp = Guid.NewGuid().ToString();
             bool hasChanges = false;
@@ -232,8 +261,12 @@ namespace Loza.Controllers
                 {
                     errors.Add(error.Description);
                 }
-                response.Errors.Add(new ErrorModel { Message = string.Join(",", errors) });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError= true,
+                    Errors = new ErrorModel { Message = string.Join(",", errors) }
+                });
             }
             else
             {
@@ -248,8 +281,12 @@ namespace Loza.Controllers
             var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "User does not exists" });
-                return NotFound(response);
+                return NotFound(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError= true,
+                    Errors = new ErrorModel { Message = "User does not exists" }
+                });
             }
             _context.Remove(user);
             _context.SaveChanges();

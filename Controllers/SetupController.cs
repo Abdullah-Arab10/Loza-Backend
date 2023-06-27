@@ -43,23 +43,34 @@ namespace Loza.Controllers
                 {
                     return Ok("Role has been added successfully");
                 }
-                response.Errors.Add(new ErrorModel { Message = "Role has not been added" });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "Role has not been added" }
+                });
 
             }
-            response.Errors.Add(new ErrorModel { Message = "Role already exist" });
-            return BadRequest(response);
+            return BadRequest(new OperationsResult
+            {
+                statusCode = 400,
+                isError = true,
+                Errors = new ErrorModel { Message = "Role already exist" }
+            });
         }
         [HttpPost("Add_User_to_Role")]
         public async Task<IActionResult> AddUserToRole(string Email, string RoleName)
         {
             var user = await _userManager.FindByEmailAsync(Email);
             user.SecurityStamp = Guid.NewGuid().ToString();
-            var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "User not found" });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "User not found" }
+                });
             }
             var role = await _roleManager.RoleExistsAsync(RoleName);
             if (!role)
@@ -71,32 +82,48 @@ namespace Loza.Controllers
             {
                 return Ok($"{user} has been added to the Role {RoleName}");
             }
-            response.Errors.Add(new ErrorModel { Message = $"{user} han not been added to the Role{RoleName}" });
-            return BadRequest(response);
+            return BadRequest(new OperationsResult
+            {
+                statusCode = 400,
+                isError = true,
+                Errors = new ErrorModel { Message = $"{user} han not been added to the Role{RoleName}" }
+            });
         }
         [HttpPost("Remove_User_From_Role")]
         public async Task<IActionResult> RemoveUserFromRole(string Email, string RoleName)
         {
             var user = await _userManager.FindByEmailAsync(Email);
             user.SecurityStamp = Guid.NewGuid().ToString();
-            var response = new OperationsResult();
             if (user == null)
             {
-                response.Errors.Add(new ErrorModel { Message = "User not found" });
-                return BadRequest(response);
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "User not found" }
+                });
             }
             var role = await _roleManager.RoleExistsAsync(RoleName);
             if (!role)
             {
-                return BadRequest($"{RoleName} does not exist");
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = $"{RoleName} does not exist" }
+                });
             }
             var result = await _userManager.RemoveFromRoleAsync(user, RoleName);
             if (result.Succeeded)
             {
                 return Ok($"{user} has been removed from the Role{RoleName}");
             }
-            response.Errors.Add(new ErrorModel { Message = $"{user} han not been removed from the Role{RoleName}" });
-            return BadRequest(response);
+            return BadRequest(new OperationsResult
+            {
+                statusCode = 400,
+                isError = true,
+                Errors = new ErrorModel { Message = $"{user} han not been removed from the Role{RoleName}" }
+            });
         }
     }
 }

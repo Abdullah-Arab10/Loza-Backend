@@ -1,7 +1,7 @@
 ﻿using Loza.Data;
 using Loza.Entities;
 //using Loza.Migrations;
-using Loza.Models;
+using Loza.Models.ResponseModels;
 using Loza.Models.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

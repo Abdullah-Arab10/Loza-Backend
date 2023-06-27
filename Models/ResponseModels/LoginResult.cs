@@ -1,4 +1,4 @@
-﻿using Loza.Models;
+﻿using Loza.Models.ResponseModels;
 
 public class LoginResult : OperationsResult
 {

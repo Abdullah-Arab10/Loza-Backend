@@ -1,4 +1,4 @@
-﻿namespace Loza.Models
+﻿namespace Loza.Models.ResponseModels
 {
     public class ErrorModel
     {

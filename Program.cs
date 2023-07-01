@@ -3,12 +3,16 @@ using Loza.Controllers;
 using Loza.Data;
 using Loza.Entities;
 using Loza.Models;
+using LozaApi.Data;
+using LozaApi.Repository.Abstract;
+using LozaApi.Repository.Implementaion;
 //using Microsoft.AspNet.Identity;
 //using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -104,8 +108,21 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddDbContext<DataContext>();
+builder.Services.AddTransient<IProductRepository, ProductRepostory>();
+builder.Services.AddTransient<IPhotoService, PhotoService>();
+builder.Services.AddTransient<IAddMultiPhoto, AddMultiPhoto>();
 
 var app = builder.Build();
+
+
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Uploads")),
+    RequestPath = "/Uploads"
+});
 
 
 // Configure the HTTP request pipeline.

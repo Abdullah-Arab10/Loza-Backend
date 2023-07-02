@@ -1,5 +1,6 @@
 ﻿using Loza.Data;
 using Loza.Entities;
+using Loza.Migrations;
 using Loza.Models;
 using Loza.Models.ResponseModels;
 using Microsoft.AspNetCore.Authorization;
@@ -29,7 +30,16 @@ namespace Loza.Controllers
         public IActionResult GetAllRoles()
         {
             var roles = _roleManager.Roles.ToList();
-            return Ok(roles);
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "roles", roles }
+            };
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data= data
+            });
         }
         [HttpPost("Create_Role")]
         public async Task<IActionResult> CreateRole(string role)
@@ -42,7 +52,11 @@ namespace Loza.Controllers
                 var roleResult = await _roleManager.CreateAsync(Role);
                 if (roleResult.Succeeded)
                 {
-                    return Ok("Role has been added successfully");
+                    return Ok(new OperationsResult
+                    {
+                        statusCode = 200,
+                        isError = false
+                    });
                 }
                 return BadRequest(new OperationsResult
                 {
@@ -76,12 +90,20 @@ namespace Loza.Controllers
             var role = await _roleManager.RoleExistsAsync(RoleName);
             if (!role)
             {
-                return Ok("Role has been added successfully");
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = false
+                });
             }
             var result = await _userManager.AddToRoleAsync(user, RoleName);
             if (result.Succeeded)
             {
-                return Ok($"{user} has been added to the Role {RoleName}");
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = false
+                });
             }
             return BadRequest(new OperationsResult
             {
@@ -117,7 +139,11 @@ namespace Loza.Controllers
             var result = await _userManager.RemoveFromRoleAsync(user, RoleName);
             if (result.Succeeded)
             {
-                return Ok($"{user} has been removed from the Role{RoleName}");
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = false
+                });
             }
             return BadRequest(new OperationsResult
             {

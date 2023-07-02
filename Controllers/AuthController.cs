@@ -189,7 +189,11 @@ namespace Loza.Controllers
                     Errors =  new ErrorModel { Message = string.Join(",", errors) } 
                 });
             }
-            return Ok("Password changed successfuly");
+            return Ok(new OperationsResult 
+            { 
+                statusCode = 200,
+                isError = false
+            });
         }
 
         [Route("Update/{Id}")]
@@ -253,7 +257,11 @@ namespace Loza.Controllers
                 if (result.Succeeded)
                 {
                     _context.SaveChanges();
-                    return Ok("Edited successfully");
+                    return Ok(new OperationsResult
+                    {
+                        statusCode = 200,
+                        isError= false
+                    });
                 }
 
                 var errors = new List<string>();
@@ -270,7 +278,11 @@ namespace Loza.Controllers
             }
             else
             {
-                return Ok("No changes were made to your profile.");
+                return Ok(new OperationsResult
+                {
+                    statusCode= 200,
+                    isError= false
+                });
             }
 
         }
@@ -291,7 +303,11 @@ namespace Loza.Controllers
             _context.Remove(user);
             _context.SaveChanges();
 
-            return Ok("Account deleted successfuly");
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError= false
+            });
         }
 
     }

@@ -4,7 +4,7 @@
     {
         public int statusCode { get; set; }
         public bool isError { get; set; }
-        public List<object> Data { get; set; } = new List<object>();
+        public object Data { get; set; } 
         public ErrorModel Errors { get; set; } = new ErrorModel();
     }
 }

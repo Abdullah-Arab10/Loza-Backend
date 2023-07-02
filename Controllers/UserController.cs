@@ -1,5 +1,6 @@
 ﻿using Loza.Data;
 using Loza.Entities;
+using Loza.Migrations;
 //using Loza.Migrations;
 using Loza.Models;
 using Loza.Models.ResponseModels;
@@ -34,8 +35,7 @@ namespace Loza.Controllers
                 DateOfBirth = u.DateOfBirth,
                 Address = u.Address
             }).ToList();
-            var response = new OperationsResult();
-
+            
             if (user == null || user.Count == 0)
             {
                 return NotFound(new OperationsResult
@@ -45,12 +45,16 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message = "No users to list" }
                 });
             }
-            response.Data.AddRange(user);
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "users", user }
+            };
+
             return Ok(new OperationsResult
             {
                 statusCode = 200,
                 isError = false,
-                Data = response.Data
+                Data = data
             });
         }
         [HttpGet("Get_by_Id/{Id}")]
@@ -67,7 +71,6 @@ namespace Loza.Controllers
                 Address = u.Address
             }).ToList();
 
-            var response = new OperationsResult();
             if (user.Count == 0)
             {
                 return NotFound(new OperationsResult
@@ -77,13 +80,17 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message = "User not found" } 
                 });
             }
-            response.Data.AddRange(user);
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "user", user }
+            };
             return Ok(new OperationsResult
             {
                 statusCode = 200,
                 isError = false,
-                Data = response.Data
+                Data = data
             });
+            
         }
         [HttpGet("Search/{search}")]
         public ActionResult<IEnumerable<User>> Search(string search)
@@ -112,12 +119,15 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message = "User not found" }
                 });
             }
-
+            Dictionary<string, object> data = new Dictionary<string, object>
+            {
+                { "users", users }
+            };
             return Ok(new OperationsResult
             {
                 statusCode = 200,
                 isError = false,
-                Data = { users }
+                Data =  data 
             });
         }
         [HttpDelete("Delete/{Id}")]
@@ -137,7 +147,12 @@ namespace Loza.Controllers
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            return Ok($"{user.FirstName}'s account has been deleted successfully");
+            //return Ok($"{user.FirstName}'s account has been deleted successfully");
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false
+            });
         }
         [HttpGet("Add_Money_to_user/{Id}")]
         public async Task<IActionResult> AddMoneyToUser(int Id, int cash)
@@ -154,7 +169,11 @@ namespace Loza.Controllers
             }
             user.Wallet += cash;
             await _context.SaveChangesAsync();
-            return Ok($"Cash has been sent to {user.Email} wallet ");
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false
+            });
         }
     }
 }

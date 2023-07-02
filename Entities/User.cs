@@ -6,9 +6,6 @@ namespace Loza.Entities
 {
     public class User : IdentityUser<int>
     {
-        [Range(0 , 1)]
-        public int Role { get; set; } = 1;
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

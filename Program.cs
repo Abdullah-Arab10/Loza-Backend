@@ -6,6 +6,7 @@ using Loza.Models;
 //using Microsoft.AspNet.Identity;
 //using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -61,7 +62,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<User, IdentityRole<int>>(options =>
 {
     options.SignIn.RequireConfirmedEmail = false;
-    options.SignIn.RequireConfirmedPhoneNumber= false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
     options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ-._@+";
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
@@ -77,11 +78,21 @@ builder.Services.AddScoped<UserManager<User>>();
 
 
 
-
-
 builder.Services.Configure<JwtConfig>(builder.Configuration.GetSection("JwtConfig"));
 
 // authentication
+
+var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value);
+
+var tokenValidationParameter = new TokenValidationParameters()
+{
+    ValidateIssuerSigningKey = true,
+    IssuerSigningKey = new SymmetricSecurityKey(key),
+    ValidateIssuer = false,
+    ValidateAudience = false,
+    ValidateLifetime = true,
+    RequireExpirationTime = false  //needs to be updated when refresh token is added
+};
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -90,24 +101,16 @@ builder.Services.AddAuthentication(options =>
 })
     .AddJwtBearer(jwt =>
     {
-        var key = Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtConfig:Secret").Value);
         jwt.RequireHttpsMetadata = false;
         jwt.SaveToken = true;
-        jwt.TokenValidationParameters = new TokenValidationParameters()
-        {
-            ValidateIssuerSigningKey = true,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-            ValidateIssuer = false,
-            ValidateAudience = false,
-            ValidateLifetime = true,
-            RequireExpirationTime = false  //needs to be updated when refresh token is added
-        };
+        jwt.TokenValidationParameters = tokenValidationParameter;
     });
 
 
+
+
+
 var app = builder.Build();
-
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

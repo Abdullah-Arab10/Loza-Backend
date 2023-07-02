@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loza.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230602213316_users")]
+    [Migration("20230607233256_users")]
     partial class users
     {
         /// <inheritdoc />
@@ -70,9 +70,6 @@ namespace Loza.Migrations
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)

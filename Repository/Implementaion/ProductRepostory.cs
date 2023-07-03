@@ -25,7 +25,7 @@ namespace Loza.Repository.Implementaion
         }
 
 
-        public ActionResult<IEnumerable<ProductsDTO>> GetProducts(int page, string sortorder="",string searchstring = null)
+        public List<ProductsDTO> GetProducts(int page, string sortorder="",string searchstring = null)
         {
             string nameSort = String.IsNullOrEmpty(sortorder)?"name_desc":"";
             string priceSort = sortorder == "Price" ? "Price_desc" : "Price";
@@ -241,7 +241,7 @@ namespace Loza.Repository.Implementaion
         }
 
 
-        public  ActionResult<IEnumerable<ProductsDTO>> GetProductByCat(int catygorey)
+        public  List<ProductsDTO> GetProductByCat(int catygorey)
         {
 
 
@@ -282,6 +282,7 @@ namespace Loza.Repository.Implementaion
                             Price = s.Price,
                             Category = s.Category,
                             Color = s.Color,
+                            ColorNo = s.ColorNo,
                             Quantity = s.Quantity,
                             ProductImage = s.ProductImage,
                             // CreateDateTime = s.CrateDateTime,

@@ -2,6 +2,7 @@
 using Loza.Data;
 using Loza.Entities;
 using Loza.Models.DTO;
+using Loza.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Query.Internal;
@@ -34,7 +35,7 @@ namespace Loza.Controllers
                 che.Rate = rate;
                 che.Rreviews = reviews;
                 await _dbContext.SaveChangesAsync();
-                return Ok();
+                return Ok(new OperationsResult {isError=false,statusCode=200 } );
             }
             var ra = new Rating{
             UserId = userId ,
@@ -47,7 +48,7 @@ namespace Loza.Controllers
             await _dbContext.Ratings.AddAsync(ra);
             _dbContext.SaveChanges();
 
-            return Ok();
+            return Ok(new OperationsResult { isError = false, statusCode = 200 });
         }
 
 
@@ -65,7 +66,9 @@ namespace Loza.Controllers
                 UserName = username.FirstName
 
             };
-            return Ok(rateing);
+
+            Dictionary<string, object> data = new Dictionary<string, object> { {"Review",rateing } };
+            return Ok(new OperationsResult { isError = false, statusCode = 200 , Data=data});
 
         }
 
@@ -85,9 +88,9 @@ namespace Loza.Controllers
                 Rate = r.Rate,
                 Rreviews = r.Rreviews
             });
+            Dictionary<string,object> data = new Dictionary<string, object>{ { "allReveiws",userRatings}};
 
-
-            return Ok(userRatings);
+            return Ok(new OperationsResult { isError = false, statusCode = 200 ,Data= data});
         }
 
        /* [Route("/total")]

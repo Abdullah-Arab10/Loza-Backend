@@ -1,10 +1,10 @@
-﻿namespace Loza.Models.DTO
+﻿namespace Loza.Models.ResponseModels
 {
     public class MyResponse
     {
         public List<object> Data { get; set; } = new List<object>();
         
-        public List<ErrorModel> Errors { get; set; }=new List<ErrorModel>();
+        public ErrorModel Errors { get; set; }
 
     }
 }

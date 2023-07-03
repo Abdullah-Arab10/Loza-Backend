@@ -7,9 +7,9 @@ namespace Loza.Repository.Abstract
 {
    public interface IProductRepository
     {
-        ActionResult<IEnumerable<ProductsDTO>> GetProducts(int page, string sortOrder,string search);
+       List<ProductsDTO> GetProducts(int page, string sortOrder,string search);
         ProductWithPhotoD GetProductById(int id);
-        ActionResult<IEnumerable<ProductsDTO>> GetProductByCat(int catygorey);
+        List<ProductsDTO> GetProductByCat(int catygorey);
         Task<List<ProductsDTO>> GetNewest();
 
         List<Product> AddProduct(AddproductDTO product);

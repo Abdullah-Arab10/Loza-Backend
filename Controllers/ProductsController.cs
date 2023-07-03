@@ -1,6 +1,8 @@
 ﻿using Loza.Data;
 using Loza.Entities;
 using Loza.Models.DTO;
+
+using Loza.Models.ResponseModels;
 using Loza.Repository.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,7 +29,22 @@ namespace Loza.Controllers
         public ActionResult<IEnumerable<ProductsDTO>> GetProducts(int page =1, [FromQuery]string sort="",[FromQuery]string search = null) 
         {
             var products = _productRepository.GetProducts(page,sort,search);
-             return products;
+
+            Dictionary<string,  object> data = new Dictionary<string, object>
+
+            {
+                { "products" , products}
+            };
+
+            return Ok(new OperationsResult
+            {
+                Data = data,
+                isError = false,
+                statusCode = 200
+
+            });
+
+                 
         }
 
 
@@ -40,11 +57,31 @@ namespace Loza.Controllers
             bool pro = _context.Product.Any(x => x.Id == id);
             if (pro == false)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "Product does not exist" });
+                return Ok(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No Product Existe" }
+                });
             }
             else
             {
-                return _productRepository.GetProductById(id);
+
+              var prod = _productRepository.GetProductById(id);
+
+                Dictionary<string, object> data = new Dictionary<string, object>
+                {
+
+                    { "Product",prod }
+                };
+
+
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = true,
+                   Data = data
+                });
 
             }
         }
@@ -55,18 +92,28 @@ namespace Loza.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<ProductsDTO>> GetProductByCat(int catygorey)
         {
-
             bool pro = _context.Product.Any(x => x.Category == catygorey);
             if (pro == false)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "Category does not exist" });
+                 return Ok(new OperationsResult
+                    {
+                        statusCode = 404,
+                        isError = true,
+                        Errors = new ErrorModel { Message = "No Category Existe" }
+                    });
             }
             else
             {
-                return _productRepository.GetProductByCat(catygorey);
 
+                var prod = _productRepository.GetProductByCat(catygorey);
+                Dictionary<string, object> data = new Dictionary<string, object> { { "ProductsByCategory",prod} };
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = true,
+                    Data = data
+                });
             }
-
         }
 
 
@@ -78,7 +125,12 @@ namespace Loza.Controllers
 
             if (product != null)
             {
-                return Ok(new Response { Status = "success", Message = "Product added successfully" });
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = false,
+                    
+                });
             }
    
             var errors = new List<string>();
@@ -100,13 +152,23 @@ namespace Loza.Controllers
             bool pro = _context.Product.Any(x => x.Id == id);
             if (pro == false)
             {
-                return StatusCode(StatusCodes.Status404NotFound, new Response { Status = "Error", Message = "Product does not exist" });
+                return Ok(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No Product Existe" }
+                });
             }
             else
             { 
               _productRepository.EditProduct(id,request);
 
-                return Ok(new Response { Status = "Success", Message = "Product Edited" });
+                return Ok(new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = true,
+                   
+                });
             }
         }
 
@@ -118,16 +180,23 @@ namespace Loza.Controllers
                 bool pro = _context.Product.Any(x => x.Id == id);
                 if (pro == false)
                 {
-                    var resp = new MyResponse();
-                    resp.Errors.Add(new ErrorModel { Message = "Not Found" });
-                    return NotFound(resp);
+                    return Ok(new OperationsResult { 
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel{Message="No Product Found"}
+                    });
                 }
             }
             
 
                     _productRepository.DeleteProduct(ids);
-         
-               return Ok(new Response { Status = "Success", Message = "Product/Products Deleted" });
+
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = true,
+              
+            });
 
 
         }
@@ -145,18 +214,27 @@ namespace Loza.Controllers
             if (re.Count == 0 )
              {
 
-                 var resp = new MyResponse();
-                 resp.Errors.Add(new ErrorModel { Message = "No Data" });
-                 return BadRequest();
-             }
+                return Ok(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No Data" }
+                });
+            }
 
-             var response = new MyResponse
+
+            Dictionary<string, object> data = new Dictionary<string, object> 
+            {
+                {"Newest",re }
+            };
+             var response =  new OperationsResult
              {
-                 Data = new List<object> (re)
-
+                 statusCode = 200,
+                 isError = false,
+                Data = data
              };
 
-                return Ok(re);
+            return Ok(response);
 
         }
     }

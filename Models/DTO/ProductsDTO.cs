@@ -11,7 +11,7 @@
         public int ColorNo { get; set; }
         public decimal Quantity { get; set; }
         public string? ProductImage { get; set; }
-       
+        public bool IsFavorite { get; set; }
         // public List<string>? ProductImages { get; set; }
         // public DateTime CreateDateTime { get; set; }
         //  public DateTime UpdateDateTime { get; set; }

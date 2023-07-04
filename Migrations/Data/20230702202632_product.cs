@@ -6,11 +6,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Loza.Migrations.Data
 {
     /// <inheritdoc />
-    public partial class pro : Migration
+    public partial class product : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "favorites",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_favorites", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
@@ -113,6 +126,9 @@ namespace Loza.Migrations.Data
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "favorites");
+
             migrationBuilder.DropTable(
                 name: "Photos");
 

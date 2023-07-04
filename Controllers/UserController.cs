@@ -52,7 +52,7 @@ namespace Loza.Controllers
 
             return Ok(new OperationsResult
             {
-                statusCode = 200,
+                statusCode = StatusCodes.Status200OK,
                 isError = false,
                 Data = data
             });

@@ -25,13 +25,13 @@ namespace Loza.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddRate(int userId , int productId,decimal rate,[FromBody]string reviews)
+        public async Task<ActionResult> AddRate(int userId , int productId,decimal rate,[FromForm]string reviews)
         {
             var check= await _dbContext.Ratings.AnyAsync(p=>p.UserId== userId&&p.ProductId==productId);
             if (check == true) 
             {
                
-               var che =  await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
+                var che =  await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
                 che.Rate = rate;
                 che.Rreviews = reviews;
                 await _dbContext.SaveChangesAsync();

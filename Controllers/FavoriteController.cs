@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Loza.Models.ResponseModels;
 using Loza.Migrations;
 using Newtonsoft.Json.Linq;
-using Loza.Migrations.Data;
+//using Loza.Migrations.Data;
+//using Loza.Migrations.Data;
 
 
 namespace Loza.Controllers
@@ -74,9 +75,9 @@ namespace Loza.Controllers
             }).Where(p => p.IsFavorite).ToListAsync();
            
             Dictionary<string, object> data = new Dictionary<string, object>
-                    {
-                        { "favoriteList", pro }
-                    };
+            {
+                { "favoriteList", pro }
+            };
             return Ok(new OperationsResult
             {
                 statusCode = 200,

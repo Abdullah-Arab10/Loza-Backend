@@ -16,7 +16,7 @@ namespace Loza.Data
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<favorite> favorites { get; set; }
-        
+        public DbSet<Address> Addresses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

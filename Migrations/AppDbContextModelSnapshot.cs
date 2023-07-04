@@ -72,8 +72,8 @@ namespace Loza.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("Wallet")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Wallet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

@@ -26,7 +26,7 @@ namespace Loza.Models.DTOs
 
         [Required]
         public string phoneNumber { get; set; }
-
+        [Required]
         public string Address { get; set; }
 
         [Required]

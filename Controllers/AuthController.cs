@@ -12,6 +12,8 @@ using System.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Loza.Models.DTO;
+
 namespace Loza.Controllers
 {
     [Route("api/[controller]")]
@@ -22,13 +24,15 @@ namespace Loza.Controllers
         private readonly RoleManager<IdentityRole<int>> _roleManager;
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _context;
+        private readonly DataContext _dataContext;
 
-        public AuthController(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager, IConfiguration configuration, AppDbContext context)
+        public AuthController(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager, IConfiguration configuration, AppDbContext context,DataContext dataContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _configuration = configuration;
             _context = context;
+            _dataContext = dataContext;
         }
         [HttpPost]
         [Route("Register")]
@@ -60,12 +64,21 @@ namespace Loza.Controllers
                     Address = requestDto.Address,
                     DateOfBirth = requestDto.DateOfBirth
                 };
+                
                 var is_created = await _userManager.CreateAsync(new_user, requestDto.password);
-
 
                 if (is_created.Succeeded)
                 {
                     var result = await _userManager.AddToRoleAsync(new_user, "User");
+                    int adddressUserId = new_user.Id;
+                    var address = new Address
+                    {
+                        UserId = adddressUserId,
+                        Location = requestDto.Address,
+                        AddressName = "Default"
+                    };
+                    await _dataContext.Addresses.AddAsync(address);
+                    await _dataContext.SaveChangesAsync();
                     if (result.Succeeded)
                     {
                         return Ok(new OperationsResult
@@ -74,6 +87,8 @@ namespace Loza.Controllers
                             isError = false
                         });
                     }
+                    
+
                     return BadRequest();
                 }
 
@@ -303,8 +318,11 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message = "User does not exists" }
                 });
             }
+            var address = await _dataContext.Addresses.Where(a => a.UserId == user.Id).ToListAsync();
+            _dataContext.Addresses.RemoveRange(address);
+            await _dataContext.SaveChangesAsync();
             _context.Remove(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(new OperationsResult
             {

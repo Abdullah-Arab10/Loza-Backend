@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loza.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230607233256_users")]
-    partial class users
+    [Migration("20230704233240_user")]
+    partial class user
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -75,8 +75,8 @@ namespace Loza.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("Wallet")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Wallet")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

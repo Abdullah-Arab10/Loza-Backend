@@ -33,6 +33,7 @@ namespace Loza.Controllers
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
                 DateOfBirth = u.DateOfBirth,
+                Wallet= u.Wallet,
                 Address = u.Address
             }).ToList();
             
@@ -68,6 +69,7 @@ namespace Loza.Controllers
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
                 DateOfBirth = u.DateOfBirth,
+                Wallet = u.Wallet,
                 Address = u.Address
             }).ToList();
 
@@ -105,6 +107,7 @@ namespace Loza.Controllers
                     Email = u.Email,
                     PhoneNumber = u.PhoneNumber,
                     DateOfBirth = u.DateOfBirth,
+                    Wallet= u.Wallet,
                     Address = u.Address
                 }).ToList();
 
@@ -155,7 +158,7 @@ namespace Loza.Controllers
             });
         }
         [HttpGet("Add_Money_to_user/{Id}")]
-        public async Task<IActionResult> AddMoneyToUser(int Id, int cash)
+        public async Task<IActionResult> AddMoneyToUser(int Id, decimal cash)
         {
             var user = _context.Users.Find(Id);
             if (user == null)

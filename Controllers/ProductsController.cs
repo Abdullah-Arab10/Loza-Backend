@@ -3,6 +3,7 @@ using Loza.Entities;
 using Loza.Models.DTO;
 using Loza.Repository.Abstract;
 using Microsoft.AspNetCore.Mvc;
+using Loza.Models.ResponseModels;
 
 
 
@@ -118,9 +119,11 @@ namespace Loza.Controllers
                 bool pro = _context.Product.Any(x => x.Id == id);
                 if (pro == false)
                 {
-                    var resp = new MyResponse();
-                    resp.Errors.Add(new ErrorModel { Message = "Not Found" });
-                    return NotFound(resp);
+                    return NotFound(new OperationsResult
+                    {
+                        statusCode = 404,
+                        isError= true
+                    });
                 }
             }
             
@@ -135,28 +138,25 @@ namespace Loza.Controllers
 
         [Route("Newest")]
         [HttpGet]
-        public async Task<IActionResult>GetNewest()
+        public async Task<IActionResult>GetNewest(int userId)
         {
-
-
-           
-            var re = await _productRepository.GetNewest();
+            var re = await _productRepository.GetNewest(userId);
             
             if (re.Count == 0 )
-             {
+            {
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true
+                });
+            }
 
-                 var resp = new MyResponse();
-                 resp.Errors.Add(new ErrorModel { Message = "No Data" });
-                 return BadRequest();
-             }
-
-             var response = new MyResponse
-             {
-                 Data = new List<object> (re)
-
-             };
-
-                return Ok(re);
+            return Ok(new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data = re
+            });
 
         }
     }

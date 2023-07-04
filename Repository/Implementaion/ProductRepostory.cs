@@ -8,6 +8,7 @@ using Loza.Models.DTO;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Azure;
+using Loza.Migrations;
 
 namespace Loza.Repository.Implementaion
 {
@@ -268,7 +269,7 @@ namespace Loza.Repository.Implementaion
 
         }
 
-         public async Task<List<ProductsDTO>> GetNewest()
+         public async Task<List<ProductsDTO>> GetNewest(int userId)
         {
             int page = 1;
             var pageResult = 10f;
@@ -285,6 +286,7 @@ namespace Loza.Repository.Implementaion
                             ColorNo = s.ColorNo,
                             Quantity = s.Quantity,
                             ProductImage = s.ProductImage,
+                            IsFavorite=  _context.favorites.Any(p => p.ProductId == s.Id && p.UserId == userId)
                             // CreateDateTime = s.CrateDateTime,
                             //UpdateDateTime = s.UpdateDateTime
 

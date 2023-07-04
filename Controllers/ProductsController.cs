@@ -204,12 +204,12 @@ namespace Loza.Controllers
 
         [Route("Newest")]
         [HttpGet]
-        public async Task<IActionResult>GetNewest()
+        public async Task<IActionResult>GetNewest(int userId)
         {
 
 
            
-            var re = await _productRepository.GetNewest();
+            var re = await _productRepository.GetNewest(userId);
             
             if (re.Count == 0 )
              {

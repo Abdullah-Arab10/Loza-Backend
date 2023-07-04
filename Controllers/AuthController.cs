@@ -145,12 +145,15 @@ namespace Loza.Controllers
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
                 var jwtToken = new JwtSecurityTokenHandler().WriteToken(new_token);
-                
-                return Ok(new LoginResult
+                Dictionary<string, object> data = new Dictionary<string, object>
+                    {
+                        { "token", jwtToken }
+                    };
+                return Ok(new OperationsResult
                 {
                     statusCode= 200,
                     isError= false,
-                    Data =  new tokenResponse { token = jwtToken } 
+                    Data = data 
                 });
 
             }
@@ -309,7 +312,6 @@ namespace Loza.Controllers
                 isError= false
             });
         }
-
     }
 
 }

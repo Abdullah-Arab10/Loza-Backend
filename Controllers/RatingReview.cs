@@ -31,7 +31,7 @@ namespace Loza.Controllers
             if (check == true) 
             {
                
-               var che =  await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
+                var che =  await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
                 che.Rate = rate;
                 che.Rreviews = reviews;
                 await _dbContext.SaveChangesAsync();

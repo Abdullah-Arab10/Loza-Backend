@@ -9,14 +9,13 @@ namespace Loza.Data
         {
             
         }
-       
-
+        
         public DbSet<Product>Product { get; set; }
         //public DbSet<User> Users { get; set; }
         public DbSet<Photo> Photos { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
         public DbSet<Rating> Ratings { get; set; }
-        
+        public DbSet<favorite> favorites { get; set; }
         
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

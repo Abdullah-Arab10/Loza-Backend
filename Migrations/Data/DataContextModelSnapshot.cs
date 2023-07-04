@@ -143,6 +143,23 @@ namespace Loza.Migrations.Data
                     b.ToTable("ShoppingCarts");
                 });
 
+            modelBuilder.Entity("Loza.Entities.favorite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("favorites");
+                });
+
             modelBuilder.Entity("Loza.Entities.Photo", b =>
                 {
                     b.HasOne("Loza.Entities.Product", "Product")

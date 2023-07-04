@@ -78,7 +78,7 @@ namespace Loza.Controllers
         {
 
           
-            var ratings = _dbContext.Ratings.ToList();
+            var ratings = _dbContext.Ratings.Where(p=>p.ProductId==productId).ToList();
             var userIds = ratings.Select(r => r.UserId).ToList();
             var users = _appDbContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
 

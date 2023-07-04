@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Loza.Migrations.Data
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230702134423_pro")]
+    [Migration("20230704215933_pro")]
     partial class pro
     {
         /// <inheritdoc />
@@ -24,6 +24,56 @@ namespace Loza.Migrations.Data
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Loza.Entities.Order", b =>
+                {
+                    b.Property<int>("Order_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_Id"));
+
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Deleverd")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("User_Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("paymethod")
+                        .HasColumnType("int");
+
+                    b.HasKey("Order_Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Loza.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Order_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Product_Id")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("total_check")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderItems");
+                });
 
             modelBuilder.Entity("Loza.Entities.Photo", b =>
                 {

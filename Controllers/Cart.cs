@@ -11,8 +11,8 @@ namespace Loza.Controllers
     [ApiController]
     public class Cart : ControllerBase
     {
-     
-     private readonly DataContext _dataContext;
+
+        private readonly DataContext _dataContext;
         public Cart(DataContext dataContext)
         {
             _dataContext = dataContext;
@@ -21,26 +21,26 @@ namespace Loza.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult> AddProductToCart(int userId , string name,string color, int colorno,int quan ) {
+        public async Task<ActionResult> AddProductToCart(int userId, string name, string color, int colorno, int quan) {
 
-            var prodctId = await _dataContext.Product.Where(p => p.Name == name && p.Color == color && p.ColorNo == colorno).Select(p=>p.Id).FirstAsync();
+            var prodctId = await _dataContext.Product.Where(p => p.Name == name && p.Color == color && p.ColorNo == colorno).Select(p => p.Id).FirstAsync();
 
-            var find = await _dataContext.ShoppingCarts.FirstOrDefaultAsync(p=>p.ProductId==prodctId&&p.UserId == userId);
-            
+            var find = await _dataContext.ShoppingCarts.FirstOrDefaultAsync(p => p.ProductId == prodctId && p.UserId == userId);
+
             if (find != null)
             {
-            find.Quant=find.Quant + quan;
+                find.Quant = find.Quant + quan;
                 await _dataContext.SaveChangesAsync();
                 return Ok();
             }
-            var pro =await _dataContext.Product.FirstOrDefaultAsync(P =>P.Id==prodctId);
+            var pro = await _dataContext.Product.FirstOrDefaultAsync(P => P.Id == prodctId);
             var cart = new ShoppingCart
             {
-               ProductId = prodctId,
-               ProductName = pro.Name,
-               price = pro.Price,
-               UserId = userId,
-               Quant = quan
+                ProductId = prodctId,
+                ProductName = pro.Name,
+                price = pro.Price,
+                UserId = userId,
+                Quant = quan
 
             };
             await _dataContext.ShoppingCarts.AddAsync(cart);
@@ -51,15 +51,9 @@ namespace Loza.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> GetUserCart(int userId) 
+        public async Task<ActionResult> GetUserCart(int userId)
         {
-
-
-
-
-          //  var cartitems = from c in _dataContext.ShoppingCarts join p in _dataContext.Product on c.ProductId equals p.Id select p;
-
-
+            //  var cartitems = from c in _dataContext.ShoppingCarts join p in _dataContext.Product on c.ProductId equals p.Id select p;
             var car = await _dataContext.ShoppingCarts.Where(p => p.UserId == userId)
             .Select(s => new CartDTO
             {
@@ -68,7 +62,7 @@ namespace Loza.Controllers
                 ProductName = s.ProductName,
                 id = (int)s.ProductId,
                 Photo = _dataContext.Product.Where(p => p.Id == s.ProductId).Select(p => p.ProductImage).First(),
-                color =  _dataContext.Product.Where(p => p.Id == s.ProductId).Select(p => p.Color).First(),
+                color = _dataContext.Product.Where(p => p.Id == s.ProductId).Select(p => p.Color).First(),
                 colorNo = _dataContext.Product.Where(p => p.Id == s.ProductId).Select(p => p.ColorNo).First()
             })
             .ToListAsync();
@@ -78,16 +72,26 @@ namespace Loza.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> RmoveFromCart(int userid,int productud)
+        public async Task<ActionResult> RmoveFromCart(int userid, int productud)
         {
 
-            var pro = await _dataContext.ShoppingCarts.Where(o => o.UserId == userid&& o.ProductId == productud).ToListAsync();
+            var pro = await _dataContext.ShoppingCarts.Where(o => o.UserId == userid && o.ProductId == productud).ToListAsync();
             _dataContext.ShoppingCarts.RemoveRange(pro);
             _dataContext.SaveChanges();
 
             return Ok();
         }
 
+
+       /* [Route("api/Cart/Clear")]
+        [HttpDelete]
+        public async Task<ActionResult> ClearCart(int userid) 
+        {
+            var items = await _dataContext.ShoppingCarts.Where(p => p.UserId == userid).ToListAsync();
+            _dataContext.RemoveRange(items);   
+            await _dataContext.SaveChangesAsync();
+            return Ok();
+        }*/
 
 
 

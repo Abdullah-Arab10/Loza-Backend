@@ -116,6 +116,7 @@ builder.Services.AddDbContext<DataContext>();
 builder.Services.AddTransient<IProductRepository, ProductRepostory>();
 builder.Services.AddTransient<IPhotoService, PhotoService>();
 builder.Services.AddTransient<IAddMultiPhoto, AddMultiPhoto>();
+builder.Services.AddTransient<IClearCart, ClearCart>();
 
 var app = builder.Build();
 

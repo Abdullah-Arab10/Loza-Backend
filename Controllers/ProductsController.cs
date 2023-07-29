@@ -24,8 +24,8 @@ namespace Loza.Controllers
         }
 
 
-
-        [HttpPatch("{page}")]
+        [Route("api/Product/GetProducts")]
+        [HttpGet]
         public ActionResult<IEnumerable<ProductsDTO>> GetProducts(int page =1, [FromQuery]string sort="",[FromQuery]string search = null) 
         {
             var products = _productRepository.GetProducts(page,sort,search);
@@ -48,9 +48,9 @@ namespace Loza.Controllers
         }
 
 
-
+        [Route("api/Product/GetProductsById/{id}")]
         [HttpGet]
-        public ActionResult<ProductWithPhotoD> GetProductById([FromQuery]int id)
+        public ActionResult<ProductWithPhotoD> GetProductById(int id)
         {
 
           
@@ -88,7 +88,7 @@ namespace Loza.Controllers
 
 
 
-        [Route("Category")]
+        [Route("Category/{catygorey}")]
         [HttpGet]
         public ActionResult<IEnumerable<ProductsDTO>> GetProductByCat(int catygorey)
         {
@@ -119,34 +119,47 @@ namespace Loza.Controllers
 
 
         [HttpPost]
-        public ActionResult<List<Product>> AddProduct([FromForm] AddproductDTO request) {
+        public ActionResult<Product> AddProduct([FromBody] AddproductDTO request) {
+            //  var pro = _context.Product.Where(p=>p.Name== request.Name&&p.Color==request.Color&&p.ColorNo==request.ColorNo).First();
+            var pro = _context.Product.Any(p => p.Name == request.Name && p.Color == request.Color && p.ColorNo == request.ColorNo);
 
-          var product =  _productRepository.AddProduct(request);
-
-            if (product != null)
+            if (pro == true)
             {
+               /* pro.Quantity += request.Quantity;
+                _context.SaveChanges();*/
+                return Ok(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = false,
+                    Errors  = new ErrorModel {Message = "There is product with same Name and Color" }
+                });
+            }
+            else
+            {
+                var product = _productRepository.AddProduct(request);
+
                 return Ok(new OperationsResult
                 {
                     statusCode = 200,
                     isError = false,
-                    
-                });
-            }
-   
-            var errors = new List<string>();
-            foreach(var error in product)
-            {
-                errors.Add(error.Description);    
 
-            }
-            return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = string.Join(",", errors) });
-           
+                });
+            }   
+
+              /*  var errors = new List<string>();
+                foreach (var error in product)
+                {
+                    errors.Add(error.Description);
+
+                }
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = string.Join(",", errors) });*/
+            
         }
 
 
-
+        [Route("EditeProduct/{id}")]
         [HttpPut]
-        public async Task<ActionResult<Product>> EditProduct(int id,[FromForm] AddproductDTO request)
+        public async Task<ActionResult<Product>> EditProduct(int id,[FromBody] AddproductDTO request)
         {
            
             bool pro = _context.Product.Any(x => x.Id == id);

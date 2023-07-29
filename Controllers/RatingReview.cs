@@ -1,6 +1,7 @@
 ﻿using Loza.Data;
 using Loza.Data;
 using Loza.Entities;
+using Loza.Migrations;
 using Loza.Models.DTO;
 using Loza.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
@@ -23,38 +24,69 @@ namespace Loza.Controllers
             this._dbContext = dbContext;
             this._appDbContext = appDbContext;
         }
-
+        [Route("AddRate")]
         [HttpPost]
-        public async Task<ActionResult> AddRate(int userId , int productId,decimal rate,[FromBody]string reviews)
+        public async Task<ActionResult> AddRate([FromBody]AddRatingDTO request)
         {
-            var check= await _dbContext.Ratings.AnyAsync(p=>p.UserId== userId&&p.ProductId==productId);
-            if (check == true) 
+              var userId = request.userId;
+              var productId=request.productId;
+              decimal rate = request.rating;
+              string reviews = request.reviews;
+              var error = new List<string>();
+            var checkuserid = await _appDbContext.users.AnyAsync(p=>p.Id==userId);
+            var checkproductid = await _dbContext.Product.AnyAsync(p=>p.Id==productId);
+            if (checkuserid is false || checkproductid is false) 
             {
-               
-                var che =  await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
-                che.Rate = rate;
-                che.Rreviews = reviews;
-                await _dbContext.SaveChangesAsync();
-                return Ok(new OperationsResult {isError=false,statusCode=200 } );
+                return Ok(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No Product or User Existe" }
+                });
             }
-            var ra = new Rating{
-            UserId = userId ,
-            ProductId = productId ,
-            Rate = rate,
-            Rreviews = reviews
-            };
+         
 
-            
-            await _dbContext.Ratings.AddAsync(ra);
-            _dbContext.SaveChanges();
+            var check = await _dbContext.Ratings.AnyAsync(p=>p.UserId== userId&&p.ProductId==productId);
+              if (check == true) 
+              {
 
-            return Ok(new OperationsResult { isError = false, statusCode = 200 });
+                  var che =  await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
+                  che.Rate = rate;
+                  che.Rreviews = reviews;
+                  await _dbContext.SaveChangesAsync();
+                  return Ok(new OperationsResult {isError=false,statusCode=200 } );
+              }
+              var ra = new Rating{
+              UserId = userId ,
+              ProductId = productId ,
+              Rate = rate,
+              Rreviews = reviews
+              };
+
+
+              await _dbContext.Ratings.AddAsync(ra);
+              _dbContext.SaveChanges();
+
+              return Ok(new OperationsResult { isError = false, statusCode = 200 });
+           
         }
 
 
         [HttpGet]
         public async Task<ActionResult> GetReview(int userId, int productId)
         {
+            var checkuserid = await _appDbContext.users.AnyAsync(p => p.Id == userId);
+            var checkproductid = await _dbContext.Product.AnyAsync(p => p.Id == productId);
+
+            if (checkuserid is false || checkproductid is false)
+            {
+                return Ok(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No Product or User Existe" }
+                });
+            }
 
             var username = await _appDbContext.Users.FirstOrDefaultAsync(p => p.Id == userId);
             var review = await _dbContext.Ratings.FirstAsync(p => p.UserId == userId && p.ProductId == productId);
@@ -72,13 +104,25 @@ namespace Loza.Controllers
 
         }
 
-        [Route("/AllReviews")]
+        [Route("/AllReviews/{productId}")]
         [HttpGet]
-        public async Task<ActionResult> GetAllReviews( int productId) 
+        public async Task<ActionResult> GetAllReviews(int productId) 
         {
+            
+            var checkproductid = await _dbContext.Product.AnyAsync(p => p.Id == productId);
 
-          
-            var ratings = _dbContext.Ratings.ToList();
+            if ( checkproductid is false)
+            {
+                return Ok(new OperationsResult
+                {
+                    statusCode = 404,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "No Product Existe" }
+                });
+            }
+
+
+            var ratings = _dbContext.Ratings.Where(p=>p.ProductId==productId).ToList();
             var userIds = ratings.Select(r => r.UserId).ToList();
             var users = _appDbContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
 

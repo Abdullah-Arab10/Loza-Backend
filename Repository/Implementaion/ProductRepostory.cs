@@ -8,7 +8,7 @@ using Loza.Models.DTO;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Azure;
-using Loza.Migrations;
+//using Loza.Migrations;
 
 namespace Loza.Repository.Implementaion
 {

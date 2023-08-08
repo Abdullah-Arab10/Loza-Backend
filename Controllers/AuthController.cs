@@ -62,7 +62,7 @@ namespace Loza.Controllers
                     PhoneNumber = requestDto.phoneNumber,
                     UserName = requestDto.email,
                     Address = requestDto.Address,
-                    DateOfBirth = requestDto.DateOfBirth
+                    DateOfBirth = DateOnly.ParseExact(requestDto.DateOfBirth, "dd/MM/yyyy", null)
                 };
 
                 var is_created = await _userManager.CreateAsync(new_user, requestDto.password);

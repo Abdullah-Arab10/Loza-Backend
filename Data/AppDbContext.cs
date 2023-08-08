@@ -36,7 +36,7 @@ namespace Loza.Data
                                   .Ignore(x => x.EmailConfirmed);
 
             var dateOnlyConverter = new ValueConverter<DateOnly, string>(
-                v => v.ToString("yyyy-MM-dd"),
+                v => v.ToString("yyyy/MM/dd"),
                 v => DateOnly.Parse(v));
             builder.Entity<User>()
                 .Property(u => u.DateOfBirth)

@@ -30,7 +30,7 @@ namespace Loza.Models.DTOs
         public string Address { get; set; }
 
         [Required]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd-MM-yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd/MM/yyyy}")]
         public DateOnly DateOfBirth { get; set;}
 
     }

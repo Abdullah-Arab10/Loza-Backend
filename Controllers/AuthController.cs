@@ -36,7 +36,7 @@ namespace Loza.Controllers
         }
         [HttpPost]
         [Route("Register")]
-        public async Task<IActionResult> Register([FromForm] UserRegistrationRequestDto requestDto)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationRequestDto requestDto)
         {
             //validate the incoming request 
             if (ModelState.IsValid)
@@ -57,14 +57,14 @@ namespace Loza.Controllers
                 var new_user = new User()
                 {
                     Email = requestDto.email,
-                    UserName = requestDto.email,
                     FirstName = requestDto.FirstName,
                     LastName = requestDto.LastName,
                     PhoneNumber = requestDto.phoneNumber,
+                    UserName = requestDto.email,
                     Address = requestDto.Address,
                     DateOfBirth = requestDto.DateOfBirth
                 };
-                
+
                 var is_created = await _userManager.CreateAsync(new_user, requestDto.password);
 
                 if (is_created.Succeeded)
@@ -88,10 +88,9 @@ namespace Loza.Controllers
                         });
                     }
                     
-
                     return BadRequest();
                 }
-
+               
                 var errors = new List<string>();
                 foreach (var error in is_created.Errors)
                 {
@@ -104,6 +103,7 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message= string.Join(",", errors) }
                 });
             }
+               
 
             return BadRequest();
         }

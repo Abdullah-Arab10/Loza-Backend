@@ -18,5 +18,6 @@ namespace Loza.Entities
 
         public DateOnly DateOfBirth { get; set; }
 
+        
     }
 }

@@ -43,6 +43,8 @@ namespace Loza.Entities
 
         public string? ProductImage { get; set; }
 
+        public string? ProductDimensions { get; set; }
+
 
 
         /* [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{dd-MM-yyyy}")]

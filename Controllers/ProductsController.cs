@@ -69,18 +69,18 @@ namespace Loza.Controllers
 
               var prod = _productRepository.GetProductById(id);
 
-                Dictionary<string, object> data = new Dictionary<string, object>
+               /* Dictionary<string, object> data = new Dictionary<string, object>
                 {
 
-                    { "Product",prod }
-                };
+                    { prod }
+                };*/
 
 
                 return Ok(new OperationsResult
                 {
                     statusCode = 200,
                     isError = true,
-                   Data = data
+                   Data = prod
                 });
 
             }
@@ -219,9 +219,37 @@ namespace Loza.Controllers
         [HttpGet]
         public async Task<IActionResult>GetNewest(int userId)
         {
+            int itemCount = 5;
+           var topSoldItemsId = await _context.OrderItems
 
+                        .GroupBy(sale => sale.Product_Id)
+                        .OrderByDescending(group => group.Sum(sale => sale.total_amount))
+                        .Select(group => group.Key)
+                        .Take(5)
+                        .ToListAsync();
+            var topSoldItems = await _context.Product .Where(item => topSoldItemsId.Contains(item.Id))
+                 .Select(s => new ProductsDTO
+                 {
+                     Id = s.Id,
+                     Name = s.Name,
+                     Description = s.Description,
+                     Price = s.Price,
+                     Category = s.Category,
+                     Color = s.Color,
+                     ColorNo = s.ColorNo,
+                     Quantity = s.Quantity,
+                     ProductDimensions = s.ProductDimensions,
+                     ProductImage = s.ProductImage,
+                     IsFavorite = _context.favorites.Any(p => p.ProductId == s.Id && p.UserId == userId)
+                 })
+            .ToListAsync();
 
-           
+           // var random = new Random();
+            var randomItems = await _context.Product
+                .OrderBy(x => Guid.NewGuid())  // Randomize the order of items
+                .Take(itemCount)
+                .ToListAsync();
+
             var re = await _productRepository.GetNewest(userId);
             
             if (re.Count == 0 )
@@ -235,16 +263,20 @@ namespace Loza.Controllers
                 });
             }
 
-
-            Dictionary<string, object> data = new Dictionary<string, object> 
+            Dictionary<string, object> data1 = new Dictionary<string, object>
             {
-                {"Newest",re }
+                {"Newest",re },
+                {"Shuffel",randomItems },
+                { "top5sales",topSoldItems }
+               
             };
+
+
              var response =  new OperationsResult
              {
                  statusCode = 200,
                  isError = false,
-                Data = data
+                Data = data1
              };
 
             return Ok(response);

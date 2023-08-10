@@ -11,6 +11,7 @@
         public decimal Quantity { get; set; }
         public string? ProductImage { get; set; }
         public decimal? Totalrate { get; set; }
+        public string? ProductDimensions { get; set; }
 
         public List<PhotosDTO>? Photos { get; set; }
     }

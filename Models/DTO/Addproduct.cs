@@ -33,9 +33,10 @@ namespace Loza.Models.DTO
         [Range(0, 100)]
         public decimal Quantity { get; set; } = 0;
 
+        public string? ProductDimensions { get; set; }
 
-       
-       public string? ProductImage { get; set; }
+        public string? ProductImage { get; set; }
+        
 
         
 

@@ -52,6 +52,7 @@ namespace Loza.Repository.Implementaion
                                               Color = s.Color,
                                               ColorNo = s.ColorNo,
                                               Quantity = s.Quantity,
+                                              ProductDimensions = s.ProductDimensions,
                                               ProductImage = s.ProductImage,
                                
                                           })
@@ -79,6 +80,7 @@ namespace Loza.Repository.Implementaion
                                  Color = s.Color,
                                  ColorNo = s.ColorNo,
                                  Quantity = s.Quantity,
+                                 ProductDimensions = s.ProductDimensions,
                                  ProductImage = s.ProductImage,
                    
                              })
@@ -105,6 +107,7 @@ namespace Loza.Repository.Implementaion
                                  Color = s.Color,
                                  ColorNo = s.ColorNo,
                                  Quantity = s.Quantity,
+                                 ProductDimensions = s.ProductDimensions,
                                  ProductImage = s.ProductImage,
                        
                              })
@@ -132,6 +135,7 @@ namespace Loza.Repository.Implementaion
                                 Color = s.Color,
                                 ColorNo = s.ColorNo,
                                 Quantity = s.Quantity,
+                                ProductDimensions = s.ProductDimensions,
                                 ProductImage = s.ProductImage,
                      
                             })
@@ -160,6 +164,7 @@ namespace Loza.Repository.Implementaion
                              Color = s.Color,
                                 ColorNo = s.ColorNo,
                              Quantity = s.Quantity,
+                                ProductDimensions = s.ProductDimensions,
                              ProductImage = s.ProductImage,
 
                          })
@@ -215,8 +220,10 @@ namespace Loza.Repository.Implementaion
                 Category = product.Category,
                 Color = product.Color,
                 ColorNo = product.ColorNo,
+                ProductDimensions = product.ProductDimensions,
                 Quantity = product.Quantity,
                 ProductImage = product.ProductImage,
+                
                 Photos = new List<Photo>()
 
             };
@@ -256,6 +263,7 @@ namespace Loza.Repository.Implementaion
                  Category = s.Category,
                  Color = s.Color,
                  Quantity = s.Quantity,
+                 ProductDimensions = s.ProductDimensions,
                  ProductImage = s.ProductImage,
                  // CreateDateTime = s.CrateDateTime,
                  //  UpdateDateTime = s.UpdateDateTime
@@ -272,7 +280,7 @@ namespace Loza.Repository.Implementaion
          public async Task<List<ProductsDTO>> GetNewest(int userId)
         {
             int page = 1;
-            var pageResult = 10f;
+            var pageResult = 5f;
             var products =await _context.Product.OrderByDescending(p=>p.Id).Skip((page-1)*(int)pageResult).Take((int)pageResult)
 
                         .Select(s => new ProductsDTO
@@ -285,6 +293,7 @@ namespace Loza.Repository.Implementaion
                             Color = s.Color,
                             ColorNo = s.ColorNo,
                             Quantity = s.Quantity,
+                            ProductDimensions = s.ProductDimensions,
                             ProductImage = s.ProductImage,
                             IsFavorite=  _context.favorites.Any(p => p.ProductId == s.Id && p.UserId == userId)
                             // CreateDateTime = s.CrateDateTime,
@@ -293,6 +302,7 @@ namespace Loza.Repository.Implementaion
 
                         })
                         .ToListAsync();
+
 
 
             return products;
@@ -314,6 +324,7 @@ namespace Loza.Repository.Implementaion
                 Price = product.Price,
                 Category = product.Category,
                 Color = product.Color,
+                ProductDimensions= product.ProductDimensions,
                 Quantity = product.Quantity,
                 ProductImage = product.ProductImage,
                 Photos = product.Photos.Select(photo => new PhotosDTO
@@ -395,6 +406,7 @@ namespace Loza.Repository.Implementaion
             product.Category = request.Category;
             product.Color = request.Color;
             product.Quantity = request.Quantity;
+            product.ProductDimensions = request.ProductDimensions;
             product.ProductImage = request.ProductImage;
            
             

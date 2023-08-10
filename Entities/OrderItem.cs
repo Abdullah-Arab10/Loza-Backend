@@ -8,7 +8,8 @@
        // public Order order { get; set; }
         public int Product_Id { get; set;}
         //public Product product { get; set; }
-        public decimal total_check { get; set;}
+        public int total_amount { get; set;}
+
      
 
     }

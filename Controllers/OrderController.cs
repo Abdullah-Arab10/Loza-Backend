@@ -1,7 +1,7 @@
 ﻿using Loza.Data;
 using Loza.Entities;
 using Loza.Migrations;
-using Loza.Migrations.Data;
+
 using Loza.Models.DTO;
 using Loza.Models.ResponseModels;
 using Loza.Repository.Abstract;
@@ -78,7 +78,7 @@ namespace Loza.Controllers
                         {
                             Order_Id = orderid,
                             Product_Id = (int)item.ProductId,
-                            total_check = item.Quant
+                            total_amount = item.Quant
 
                         };
                         await _dataContext.OrderItems.AddAsync(orderitem);
@@ -119,7 +119,7 @@ namespace Loza.Controllers
                     {
                         Order_Id = orderid1,
                         Product_Id = (int)item1.ProductId,
-                        total_check = item1.price
+                        total_amount = item1.Quant
                     };
                     await _dataContext.OrderItems.AddAsync(orderitem1);
                     await _dataContext.SaveChangesAsync();
@@ -156,7 +156,7 @@ namespace Loza.Controllers
                 var s = new OrderItems
                 { proname =await _dataContext.Product.Where(p=>p.Id==item).Select(p=>p.Name).FirstOrDefaultAsync(),
                   color= await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Color).FirstOrDefaultAsync(),
-                  quantinty= await _dataContext.OrderItems.Where(p => p.Id == item).Select(p=>p.total_check).FirstOrDefaultAsync(),
+                  quantinty= await _dataContext.OrderItems.Where(p => p.Id == item).Select(p=>p.total_amount).FirstOrDefaultAsync(),
                   price= await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Price ).FirstOrDefaultAsync(),
                   
                 };

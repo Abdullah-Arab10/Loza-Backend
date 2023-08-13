@@ -133,24 +133,29 @@ namespace Loza.Controllers
                 Data =  data 
             });
         }
-        [HttpDelete("Delete/{Id}")]
-        public async Task<IActionResult> DeleteUser(int Id)
+        [HttpDelete("Block/{Id}")]
+        public async Task<IActionResult> BlockUser(List<int> ids)
         {
-            var user = await _context.Users.FindAsync(Id);
-            if (user == null)
+            foreach (int id in ids)
             {
-                return NotFound(new OperationsResult
+                var user = await _context.Users.FindAsync(id);
+                if (user == null)
                 {
-                    statusCode = 404,
-                    isError = true,
-                    Errors = new ErrorModel { Message = "Not Found" }
-                });
+                    return NotFound(new OperationsResult
+                    {
+                        statusCode = 404,
+                        isError = true,
+                        Errors = new ErrorModel { Message = "Not Found" }
+                    });
+                }
+
+                _context.Users.Remove(user);
+                var blocked = new BlockedAccounts { Email = user.Email };
+                _context.blockedAccounts.Add(blocked);
             }
 
-            _context.Users.Remove(user);
             await _context.SaveChangesAsync();
 
-            //return Ok($"{user.FirstName}'s account has been deleted successfully");
             return Ok(new OperationsResult
             {
                 statusCode = 200,

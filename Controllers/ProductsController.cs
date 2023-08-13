@@ -119,7 +119,7 @@ namespace Loza.Controllers
 
 
         [HttpPost]
-        public ActionResult<Product> AddProduct([FromBody] AddproductDTO request) {
+        public ActionResult<Product> AddProduct([FromForm] AddproductDTO request) {
             //  var pro = _context.Product.Where(p=>p.Name== request.Name&&p.Color==request.Color&&p.ColorNo==request.ColorNo).First();
             var pro = _context.Product.Any(p => p.Name == request.Name && p.Color == request.Color && p.ColorNo == request.ColorNo);
 

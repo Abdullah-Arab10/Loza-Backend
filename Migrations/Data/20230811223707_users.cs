@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Loza.Migrations.Data
 {
     /// <inheritdoc />
-    public partial class product : Migration
+    public partial class users : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,39 @@ namespace Loza.Migrations.Data
                 });
 
             migrationBuilder.CreateTable(
+                name: "OrderItems",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Order_Id = table.Column<int>(type: "int", nullable: false),
+                    Product_Id = table.Column<int>(type: "int", nullable: false),
+                    total_amount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderItems", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Order_Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    User_Id = table.Column<int>(type: "int", nullable: false),
+                    User_Adress = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Deleverd = table.Column<bool>(type: "bit", nullable: true),
+                    paymethod = table.Column<int>(type: "int", nullable: false),
+                    AdressId = table.Column<int>(type: "int", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Order_Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -52,7 +85,8 @@ namespace Loza.Migrations.Data
                     Color = table.Column<string>(type: "nvarchar(24)", maxLength: 24, nullable: false),
                     ColorNo = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    ProductImage = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    ProductImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductDimensions = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -146,6 +180,12 @@ namespace Loza.Migrations.Data
 
             migrationBuilder.DropTable(
                 name: "favorites");
+
+            migrationBuilder.DropTable(
+                name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Photos");

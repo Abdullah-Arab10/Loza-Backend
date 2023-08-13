@@ -46,6 +46,59 @@ namespace Loza.Migrations.Data
                     b.ToTable("Addresses");
                 });
 
+            modelBuilder.Entity("Loza.Entities.Order", b =>
+                {
+                    b.Property<int>("Order_Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Order_Id"));
+
+                    b.Property<int>("AdressId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Created_at")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool?>("Deleverd")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("User_Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("User_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("paymethod")
+                        .HasColumnType("int");
+
+                    b.HasKey("Order_Id");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("Loza.Entities.OrderItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Order_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Product_Id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("total_amount")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderItems");
+                });
+
             modelBuilder.Entity("Loza.Entities.Photo", b =>
                 {
                     b.Property<int>("Id")
@@ -99,6 +152,9 @@ namespace Loza.Migrations.Data
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductDimensions")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProductImage")
                         .HasColumnType("nvarchar(max)");

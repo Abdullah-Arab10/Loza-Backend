@@ -15,6 +15,7 @@ namespace Loza.Data
 
         }
         public DbSet<User> users { get; set; }
+        public DbSet<BlockedAccounts> blockedAccounts { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
 

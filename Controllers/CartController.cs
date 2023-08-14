@@ -5,6 +5,7 @@ using Loza.Models.ResponseModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders.Physical;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Loza.Controllers
@@ -21,25 +22,32 @@ namespace Loza.Controllers
 
         }
 
-
+        [Route("AddToCart")]
         [HttpPost]
-        public async Task<ActionResult> AddProductToCart(int userId, string name, string color, int colorno, int quan) {
+        public async Task<ActionResult> AddProductToCart(AddToCart addcart) {
 
          
 
-            var prodctId = await _dataContext.Product.Where(p => p.Name == name && p.Color == color && p.ColorNo == colorno).Select(p => new {id=p.Id,quant=p.Quantity }).FirstAsync();
+            var prodctId = await _dataContext.Product.Where(p => p.Name == addcart.name && p.Color == addcart.color && p.ColorNo == addcart.colorno).Select(p => new {id=p.Id,quant=p.Quantity }).FirstAsync();
             //var prodquant = await _dataContext.Product.Where(p => p.Id == prodctId.id).FirstAsync();
-            if (prodctId.quant<quan)
+            if (prodctId.quant<addcart.quant)
             {
-                return Ok("no enought products in stock");
+
+
+                return Ok(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = "no enought products in stock" }
+                });
             }
             else
             {
-                var find = await _dataContext.ShoppingCarts.FirstOrDefaultAsync(p => p.ProductId == prodctId.id && p.UserId == userId);
-
+                var find = await _dataContext.ShoppingCarts.FirstOrDefaultAsync(p => p.ProductId == prodctId.id && p.UserId == addcart.userId);
+                
                 if (find != null)
                 {
-                    find.Quant = find.Quant + quan;
+                    find.Quant = find.Quant + addcart.quant ;
                     await _dataContext.SaveChangesAsync();
                     return Ok();
                 }
@@ -49,18 +57,25 @@ namespace Loza.Controllers
                     ProductId = prodctId.id,
                     ProductName = pro.Name,
                     price = pro.Price,
-                    UserId = userId,
-                    Quant = quan
+                    UserId =addcart.userId,
+                    Quant = addcart.quant
 
                 };
 
                 await _dataContext.ShoppingCarts.AddAsync(cart);
                 await _dataContext.SaveChangesAsync();
-                return Ok();
+                var response = new OperationsResult
+                {
+                    statusCode = 200,
+                    isError = false,
+                    
+                };
+
+                return Ok(response);
 
             }
         }
-
+        [Route("GetUserCart")]
         [HttpGet]
         public async Task<ActionResult> GetUserCart(int userId)
         {
@@ -78,10 +93,23 @@ namespace Loza.Controllers
             })
             .ToListAsync();
 
-            return Ok(car);
+
+            Dictionary<string,object> data = new Dictionary<string, object>
+            {
+                { "UserCart",car}
+            };
+
+            var response = new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data = data
+            };
+
+            return Ok(response);
 
         }
-
+        [Route("DeleteFromCart")]
         [HttpDelete]
         public async Task<ActionResult> RmoveFromCart(int userid, int productud)
         {
@@ -92,19 +120,6 @@ namespace Loza.Controllers
 
             return Ok();
         }
-
-
-       /* [Route("api/Cart/Clear")]
-        [HttpDelete]
-        public async Task<ActionResult> ClearCart(int userid) 
-        {
-            var items = await _dataContext.ShoppingCarts.Where(p => p.UserId == userid).ToListAsync();
-            _dataContext.RemoveRange(items);   
-            await _dataContext.SaveChangesAsync();
-            return Ok();
-        }*/
-
-
 
     }
 }

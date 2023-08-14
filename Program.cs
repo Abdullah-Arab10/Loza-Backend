@@ -117,6 +117,15 @@ builder.Services.AddTransient<IProductRepository, ProductRepostory>();
 builder.Services.AddTransient<IPhotoService, PhotoService>();
 builder.Services.AddTransient<IAddMultiPhoto, AddMultiPhoto>();
 builder.Services.AddTransient<IClearCart, ClearCart>();
+builder.Services.AddCors(options =>
+    {
+    options.AddDefaultPolicy(builder => 
+       {
+        builder.AllowAnyOrigin()
+               .AllowAnyMethod()
+               .AllowAnyMethod();
+       });
+   });
 
 var app = builder.Build();
 
@@ -139,7 +148,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors();
 app.MapControllers();
 
 app.Run();

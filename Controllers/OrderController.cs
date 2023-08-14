@@ -7,6 +7,7 @@ using Loza.Models.ResponseModels;
 using Loza.Repository.Abstract;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using MimeKit.Cryptography;
@@ -29,6 +30,7 @@ namespace Loza.Controllers
             this._clearCart = clearCart;
         }
 
+        [Route("CreateOrder")]
         [HttpPost]
         public async Task<ActionResult> Createorder([FromBody] OrderQuery request/*int userid, int paymentmethod, int addressid,decimal total = 80*/)
         {
@@ -134,7 +136,7 @@ namespace Loza.Controllers
             }
         }
 
-
+        [Route("GetOrderByNumber")]
         [HttpGet]
         public async Task<ActionResult> GetOrderByNumber( int orderid) 
         {
@@ -169,6 +171,7 @@ namespace Loza.Controllers
                 shippingadress = getpro.User_Adress,
                 paymentmethod = getpro.paymethod,
                 orderdate = getpro.Created_at,
+                isDelivered = getpro.Deleverd,
                 products = o
             };
             Dictionary<string, object> data = new Dictionary<string, object> { { "OrderByOrderNumber", pro } };
@@ -181,9 +184,9 @@ namespace Loza.Controllers
             });
         }
 
-        [Route("api/Order/GetAllOrders/{userid}")]
+        [Route("api/Order/GetUserOrders/{userid}")]
         [HttpGet]
-        public async Task<ActionResult> GetAllOrders(int userid) {
+        public async Task<ActionResult> GetUserOrders(int userid,int page = 1) {
             var founduser = await _appDbContext.users.AnyAsync(p=>p.Id==userid);
             if (founduser is false)
             {
@@ -195,7 +198,11 @@ namespace Loza.Controllers
                     
                 });
             }
-            var getorders = await _dataContext.Orders.Where(p => p.User_Id == userid).ToListAsync();
+            var pageResult = 10f;
+            var getorders = await _dataContext.Orders.Where(p => p.User_Id == userid).OrderByDescending(s => s.Created_at)
+            .Skip((page - 1) * (int)pageResult)
+                           .Take((int)pageResult)
+                           .ToListAsync();
             if (getorders.Count == 0)
             {
                 return Ok(new OperationsResult
@@ -208,7 +215,7 @@ namespace Loza.Controllers
             var getAllOrders = new List<GetAllOrders>();
             foreach (var order in getorders) 
             {
-                var c = new GetAllOrders { orderNumber = order.Order_Id, useraddress = order.User_Adress,Orderdate=order.Created_at };
+                var c = new GetAllOrders { orderNumber = order.Order_Id, useraddress = order.User_Adress,isDelivered=order.Deleverd,Orderdate=order.Created_at };
                 getAllOrders.Add(c);
             }
             Dictionary<string, object> data = new Dictionary<string, object> { { "AllOrders", getAllOrders} };
@@ -220,12 +227,38 @@ namespace Loza.Controllers
             });
 
         }
+
+        [Route("api/Order/GetAllOrders")]
+        [HttpGet]
+        public async Task<ActionResult> GetAllOrders(int page=1)
+        {
+            var pageResult = 10f;
+            var orders = await _dataContext.Orders
+                 .Skip((page - 1) * (int)pageResult)
+                         .Take((int)pageResult)
+                         .Select( s => new GetAllOrders
+                         {
+                            orderNumber = s.Order_Id,
+                            useraddress=s.User_Adress,
+                            isDelivered =s.Deleverd,
+                            Orderdate=s.Created_at,
+                         })
+                         .ToListAsync();
+            Dictionary<string, object> data1 = new Dictionary<string, object>
+            {
+                {"AllOrders",orders}
+
+            };
+            var response = new OperationsResult
+            {
+                statusCode = 200,
+                isError = false,
+                Data = data1
+            };
+
+            return Ok(response);
+        }
     }
-
-
-
-
-    
   }
     
 

@@ -69,17 +69,12 @@ namespace Loza.Controllers
 
               var prod = _productRepository.GetProductById(id);
 
-               /* Dictionary<string, object> data = new Dictionary<string, object>
-                {
-
-                    { prod }
-                };*/
-
+               
 
                 return Ok(new OperationsResult
                 {
                     statusCode = 200,
-                    isError = true,
+                    isError = false,
                    Data = prod
                 });
 
@@ -146,20 +141,13 @@ namespace Loza.Controllers
                 });
             }   
 
-              /*  var errors = new List<string>();
-                foreach (var error in product)
-                {
-                    errors.Add(error.Description);
-
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = string.Join(",", errors) });*/
             
         }
 
 
         [Route("EditeProduct/{id}")]
         [HttpPut]
-        public async Task<ActionResult<Product>> EditProduct(int id,[FromBody] AddproductDTO request)
+        public async Task<ActionResult<Product>> EditProduct(int id,[FromForm] AddproductDTO request)
         {
            
             bool pro = _context.Product.Any(x => x.Id == id);

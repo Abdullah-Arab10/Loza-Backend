@@ -124,11 +124,11 @@ namespace Loza.Controllers
 
             var ratings = _dbContext.Ratings.Where(p=>p.ProductId==productId).ToList();
             var userIds = ratings.Select(r => r.UserId).ToList();
-            var users = _appDbContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
+            var users =_appDbContext.Users.Where(u => userIds.Contains(u.Id)).ToList();
 
-            var userRatings = ratings.Select(r => new RatingReviewDTO
+            var userRatings = ratings.Select( r => new RatingReviewDTO
             {
-                UserName = users.First(u => u.Id == r.UserId).FirstName,
+                UserName = users.First(u => u.Id == r.UserId).FirstName+" "+users.First(u => u.Id == r.UserId).LastName,
                 Rate = r.Rate,
                 Rreviews = r.Rreviews
             });
@@ -137,21 +137,6 @@ namespace Loza.Controllers
             return Ok(new OperationsResult { isError = false, statusCode = 200 ,Data= data});
         }
 
-       /* [Route("/total")]
-        [HttpGet]
-        public decimal TotalRate(int productId) 
-        { 
-            var total = _dbContext.Ratings.Where(p=>p.ProductId==productId).Select(p=>p.Rate).ToList();
-
-            decimal totalRate = (decimal)0;
-            foreach (var user in total)
-            {
-                totalRate = totalRate + user;
-            }
-            totalRate = totalRate / total.Count;
-            totalRate = Math.Round(totalRate, 2);
-            return totalRate;
-        
-        }*/
+    
     }
 }

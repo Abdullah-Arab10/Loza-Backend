@@ -43,7 +43,17 @@ namespace Loza.Controllers
             {
                 //we need to check if the email already exist
                 var user_exist = await _userManager.FindByEmailAsync(requestDto.email);
-                var response = new OperationsResult();
+                var isBlocked = await _context.blockedAccounts.AnyAsync(b => b.Email == requestDto.email);
+                if (isBlocked)
+                {
+                    return StatusCode(403, new OperationsResult
+                    {
+                        statusCode = 403,
+                        isError = true,
+                        Errors = new ErrorModel { Message = "Email Blocked" }
+                    });
+                }
+
                 if (user_exist != null)
                 {
                     return BadRequest(new OperationsResult

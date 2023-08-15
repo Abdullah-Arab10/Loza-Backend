@@ -175,22 +175,7 @@ namespace Loza.Repository.Implementaion
 
                 }
 
-                //var pageCount = Math.Ceiling(_context.Product.Count()/pageResult);
-
-                /* var products = await _context.Product
-
-                       .Skip((page - 1) * (int)pageResult)
-                       .Take((int)pageResult)
-                       .ToListAsync();
-
-                 /*var response = new Paging
-                 {
-                     Products = products,
-                     CurrentPages=page,
-                     Pages=(int)pageCount
-                 };*/
-
-                // return products;
+             
             }
         }
         public List<Product> AddProduct(AddproductDTO product)
@@ -199,16 +184,11 @@ namespace Loza.Repository.Implementaion
 
             if(product.ImageFile!= null)
             {
-                // _photosevice.SaveImage(model.ImageFile)
+                
                 var fileResult = _photoservice.SaveImage(product.ImageFile);
 
                 product.ProductImage = fileResult;
             }
-
-            // if(product.ImageFiles!= null) { 
-
-            // var files = _addMultiPhoto.SaveMultiplePhotos(product.ImageFiles);
-            //}
 
 
 
@@ -247,8 +227,6 @@ namespace Loza.Repository.Implementaion
             return _context.Product.ToList();
 
         }
-
-
         public  List<ProductsDTO> GetProductByCat(int catygorey)
         {
 
@@ -265,8 +243,7 @@ namespace Loza.Repository.Implementaion
                  Quantity = s.Quantity,
                  ProductDimensions = s.ProductDimensions,
                  ProductImage = s.ProductImage,
-                 // CreateDateTime = s.CrateDateTime,
-                 //  UpdateDateTime = s.UpdateDateTime
+             
 
 
              })
@@ -276,8 +253,7 @@ namespace Loza.Repository.Implementaion
 
 
         }
-
-         public async Task<List<ProductsDTO>> GetNewest(int userId)
+        public async Task<List<ProductsDTO>> GetNewest(int userId)
         {
             int page = 1;
             var pageResult = 5f;
@@ -296,8 +272,7 @@ namespace Loza.Repository.Implementaion
                             ProductDimensions = s.ProductDimensions,
                             ProductImage = s.ProductImage,
                             IsFavorite=  _context.favorites.Any(p => p.ProductId == s.Id && p.UserId == userId)
-                            // CreateDateTime = s.CrateDateTime,
-                            //UpdateDateTime = s.UpdateDateTime
+                           
 
 
                         })
@@ -308,7 +283,6 @@ namespace Loza.Repository.Implementaion
             return products;
 
         }
-
         public ProductWithPhotoD GetProductById(int id)
         {
 
@@ -324,6 +298,7 @@ namespace Loza.Repository.Implementaion
                 Price = product.Price,
                 Category = product.Category,
                 Color = product.Color,
+                ColorNo= product.ColorNo,
                 ProductDimensions= product.ProductDimensions,
                 Quantity = product.Quantity,
                 ProductImage = product.ProductImage,
@@ -364,28 +339,7 @@ namespace Loza.Repository.Implementaion
 
 
             
-            /* var product = 
-                 _context.Product
-
-                  .Where(x=>x.Id == id)
-                  .Select(s => new ProductsDTO
-                 {
-                     Id = s.Id,
-                     Name = s.Name,
-                     Description = s.Description,
-                     Price = s.Price,
-                     Category = s.Category,
-                     Color = s.Color,
-                     Quantity = s.Quantity,
-                     ProductImage = s.ProductImage,
-                    // CreateDateTime = s.CrateDateTime,
-                   //  UpdateDateTime = s.UpdateDateTime
-
-
-                 })
-                          .ToList(); 
-
-             return product;*/
+         
 
         }
         public void EditProduct(int id, AddproductDTO request)
@@ -405,6 +359,7 @@ namespace Loza.Repository.Implementaion
             product.Price = request.Price;
             product.Category = request.Category;
             product.Color = request.Color;
+            product.ColorNo = request.ColorNo;
             product.Quantity = request.Quantity;
             product.ProductDimensions = request.ProductDimensions;
             product.ProductImage = request.ProductImage;

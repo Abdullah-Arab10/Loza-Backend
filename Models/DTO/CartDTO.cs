@@ -8,7 +8,7 @@
         public decimal price { get; set; }
         public string Photo { get; set; }
         public string color { get; set; }
-        public int colorNo { get; set; }
+        public long colorNo { get; set; }
         public int id { get; set; }
 
 

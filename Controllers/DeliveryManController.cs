@@ -72,12 +72,14 @@ namespace Loza.Controllers
             List<OrderItems> o = new List<OrderItems>();
             foreach (var item in orderitmes)
             {
+                var quant = await _dataContext.OrderItems.Where(p => p.Id == item).Select(p => p.total_amount).FirstAsync();
+                var pr = await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Price).FirstAsync();
                 var s = new OrderItems
                 {
                     proname = await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Name).FirstOrDefaultAsync(),
                     color = await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Color).FirstOrDefaultAsync(),
-                    quantinty = await _dataContext.OrderItems.Where(p => p.Id == item).Select(p => p.total_amount).FirstOrDefaultAsync(),
-                    price = await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Price).FirstOrDefaultAsync(),
+                    quantinty = quant,
+                    price = pr * quant
 
                 };
                 o.Add(s);
@@ -90,6 +92,7 @@ namespace Loza.Controllers
                 paymentmethod = getpro.paymethod,
                 orderdate = getpro.Created_at,
                 isDelivered = getpro.Deleverd,
+                TotalCheck = getpro.TotalCheck,
                 phonenumber = await _appDbContext.Users.Where(u => u.Id == getpro.User_Id).Select(p => p.PhoneNumber).FirstAsync(),
                 username = await _appDbContext.Users.Where(u => u.Id == getpro.User_Id).Select(p => p.FirstName + " " + p.LastName).FirstOrDefaultAsync(),
                 products = o

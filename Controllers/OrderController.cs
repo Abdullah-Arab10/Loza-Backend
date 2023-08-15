@@ -61,9 +61,11 @@ namespace Loza.Controllers
                     var createorder = new Order
                     {
                         User_Id = userid,
+                        TotalCheck = total,
                         User_Adress = await _dataContext.Addresses.Where(p => p.Id == addressid).Select(p => p.Location).FirstAsync(),
                         paymethod = paymentmethod,
-                        AdressId = addressid
+                        AdressId = addressid,
+                       
                     };
                     await _dataContext.Orders.AddAsync(createorder);
                     await _dataContext.SaveChangesAsync();
@@ -104,7 +106,8 @@ namespace Loza.Controllers
                     User_Id = userid,
                     User_Adress = await _dataContext.Addresses.Where(p => p.Id == addressid).Select(p => p.Location).FirstAsync(),
                     paymethod = paymentmethod,
-                    AdressId = addressid
+                    AdressId = addressid,
+                    TotalCheck = total
                 };
                 await _dataContext.Orders.AddAsync(createorder1);
                 await _dataContext.SaveChangesAsync();
@@ -174,6 +177,7 @@ namespace Loza.Controllers
                 paymentmethod = getpro.paymethod,
                 orderdate = getpro.Created_at,
                 isDelivered = getpro.Deleverd,
+                TotalCheck = getpro.TotalCheck,
                 products = o
             };
             Dictionary<string, object> data = new Dictionary<string, object> { { "OrderByOrderNumber", pro } };

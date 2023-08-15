@@ -13,6 +13,7 @@ namespace Loza.Entities
         public bool? Deleverd { get; set; } = false;
         public int paymethod { get; set; } 
         public int AdressId { get; set; }
+        public decimal TotalCheck { get; set; }
         [DefaultValue("GETDATE()")]
         public DateTime Created_at { get; set; } = DateTime.Now.AddSeconds(-DateTime.Now.Second);
 

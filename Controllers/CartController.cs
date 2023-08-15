@@ -62,7 +62,14 @@ namespace Loza.Controllers
                     {
                         await _dataContext.SaveChangesAsync();
 
-                        return Ok();
+                        var response1 = new OperationsResult
+                        {
+                            statusCode = 200,
+                            isError = false,
+
+                        };
+
+                        return Ok(response1);
                     }
                 }
                 var pro = await _dataContext.Product.FirstOrDefaultAsync(P => P.Id == prodctId.id);

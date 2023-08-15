@@ -33,7 +33,7 @@ namespace Loza.Entities
         [StringLength(24)]
         public string Color { get; set; }
 
-        public int ColorNo { get; set; }
+        public long ColorNo { get; set; }
 
 
         [Range(0, 100)]

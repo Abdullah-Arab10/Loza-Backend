@@ -48,8 +48,22 @@ namespace Loza.Controllers
                 if (find != null)
                 {
                     find.Quant = find.Quant + addcart.quant ;
-                    await _dataContext.SaveChangesAsync();
-                    return Ok();
+                    if (prodctId.quant < find.Quant)
+                    {
+
+                        return Ok(new OperationsResult
+                        {
+                            statusCode = 400,
+                            isError = true,
+                            Errors = new ErrorModel { Message = "no enought products in stock" }
+                        });
+                    }
+                    else
+                    {
+                        await _dataContext.SaveChangesAsync();
+
+                        return Ok();
+                    }
                 }
                 var pro = await _dataContext.Product.FirstOrDefaultAsync(P => P.Id == prodctId.id);
                 var cart = new ShoppingCart

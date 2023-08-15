@@ -9,6 +9,7 @@
         public bool? isDelivered { get; set; }
         public string phonenumber { get; set; }
         public string username { get; set; }
+        public decimal TotalCheck { get; set; }
         public List<OrderItems> products { get; set; }
     }
 }

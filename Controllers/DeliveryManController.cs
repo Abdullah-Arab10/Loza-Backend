@@ -72,7 +72,7 @@ namespace Loza.Controllers
             List<OrderItems> o = new List<OrderItems>();
             foreach (var item in orderitmes)
             {
-                var quant = await _dataContext.OrderItems.Where(p => p.Id == item).Select(p => p.total_amount).FirstAsync();
+                var quant = await _dataContext.OrderItems.Where(p => p.Product_Id == item&&p.Order_Id==ordernumber).Select(p => p.total_amount).FirstAsync();
                 var pr = await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Price).FirstAsync();
                 var s = new OrderItems
                 {

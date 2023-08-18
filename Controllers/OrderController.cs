@@ -158,7 +158,7 @@ namespace Loza.Controllers
             List<OrderItems> o = new List<OrderItems>();
           foreach(var item in orderitmes)
             {
-                var qu = await _dataContext.OrderItems.Where(p => p.Id == item).Select(p => p.total_amount).FirstAsync();
+                var qu = await _dataContext.OrderItems.Where(p => p.Product_Id == item&&p.Order_Id==orderid).Select(p => p.total_amount).FirstAsync();
                 var pr = await _dataContext.Product.Where(p => p.Id == item).Select(p => p.Price).FirstAsync();
                 var s = new OrderItems
                 { proname =await _dataContext.Product.Where(p=>p.Id==item).Select(p=>p.Name).FirstOrDefaultAsync(),
@@ -190,7 +190,7 @@ namespace Loza.Controllers
             });
         }
 
-        [Route("api/Order/GetUserOrders/{userid}")]
+        [Route("GetUserOrders/{userid}")]
         [HttpGet]
         public async Task<ActionResult> GetUserOrders(int userid,int page = 1) {
             var founduser = await _appDbContext.users.AnyAsync(p=>p.Id==userid);

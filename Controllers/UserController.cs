@@ -3,6 +3,7 @@ using Loza.Entities;
 using Loza.Migrations;
 //using Loza.Migrations;
 using Loza.Models;
+using Loza.Models.DTO;
 using Loza.Models.ResponseModels;
 using Loza.Models.User;
 using Microsoft.AspNetCore.Authorization;
@@ -162,10 +163,10 @@ namespace Loza.Controllers
                 isError = false
             });
         }
-        [HttpGet("Add_Money_to_user/{Id}")]
-        public async Task<IActionResult> AddMoneyToUser(int Id, decimal cash)
+        [HttpPost("Add_Money_to_user")]
+        public async Task<IActionResult> AddMoneyToUser(AddMoneyToWallet wallet)
         {
-            var user = _context.Users.Find(Id);
+            var user =await _context.Users.Where(p=>p.Email==wallet.email).FirstOrDefaultAsync();
             if (user == null)
             {
                 return NotFound(new OperationsResult
@@ -175,7 +176,7 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message = "User not found" }
                 });
             }
-            user.Wallet += cash;
+            user.Wallet += wallet.cash;
             await _context.SaveChangesAsync();
             return Ok(new OperationsResult
             {

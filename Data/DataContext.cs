@@ -1,5 +1,6 @@
 ﻿global using Microsoft.EntityFrameworkCore;
 using Loza.Entities;
+using System.Reflection.Metadata;
 
 namespace Loza.Data
 {
@@ -19,6 +20,8 @@ namespace Loza.Data
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Order>Orders { get; set; }
         public DbSet<OrderItem>OrderItems { get; set; }
+        public DbSet<ReturnOrder>ReturnOrders { get; set; }
+     
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

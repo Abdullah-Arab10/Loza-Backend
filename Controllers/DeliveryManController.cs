@@ -23,13 +23,12 @@ namespace Loza.Controllers
         }
         [Route("NotDelIveredOrders")]
         [HttpGet]
-        public async Task<ActionResult> NotDeliveredOrders(int page = 1)
+        public async Task<ActionResult> NotDeliveredOrders()
         {
-            var pageResult = 10f;
+            
             var notdelivered = await _dataContext.Orders.Where(s => s.Deleverd == false)
                 .OrderByDescending(p => p.Created_at)
-                .Skip((page - 1) * (int)pageResult)
-                .Take((int)pageResult).Select(s => new GetAllOrders
+                .Select(s => new GetAllOrders
                 {
                     orderNumber = s.Order_Id,
                     useraddress = s.User_Adress,

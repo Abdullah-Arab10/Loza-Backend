@@ -77,7 +77,7 @@ namespace Loza.Controllers
             {
                 { "ReturnRequests",GRR}
             };
-            return NotFound(new OperationsResult
+            return Ok(new OperationsResult
             {
                 statusCode = 200,
                 isError = false,
@@ -94,7 +94,7 @@ namespace Loza.Controllers
             var getpro = await _dataContext.Orders.FirstOrDefaultAsync(p => p.Order_Id == ordernumber.Order_Id);
             if (getpro == null)
             {
-                return Ok(new OperationsResult
+                return NotFound(new OperationsResult
                 {
                     statusCode = 404,
                     isError = false,

@@ -192,7 +192,7 @@ namespace Loza.Controllers
 
         [Route("GetUserOrders/{userid}")]
         [HttpGet]
-        public async Task<ActionResult> GetUserOrders(int userid,int page = 1) {
+        public async Task<ActionResult> GetUserOrders(int userid) {
             var founduser = await _appDbContext.users.AnyAsync(p=>p.Id==userid);
             if (founduser is false)
             {
@@ -204,10 +204,9 @@ namespace Loza.Controllers
                     
                 });
             }
-            var pageResult = 10f;
+            
             var getorders = await _dataContext.Orders.Where(p => p.User_Id == userid).OrderByDescending(s => s.Created_at)
-            .Skip((page - 1) * (int)pageResult)
-                           .Take((int)pageResult)
+           
                            .ToListAsync();
             if (getorders.Count == 0)
             {
@@ -236,12 +235,10 @@ namespace Loza.Controllers
 
         [Route("api/Order/GetAllOrders")]
         [HttpGet]
-        public async Task<ActionResult> GetAllOrders(int page=1)
+        public async Task<ActionResult> GetAllOrders()
         {
-            var pageResult = 10f;
+            
             var orders = await _dataContext.Orders
-                 .Skip((page - 1) * (int)pageResult)
-                         .Take((int)pageResult)
                          .Select( s => new GetAllOrders
                          {
                             orderNumber = s.Order_Id,

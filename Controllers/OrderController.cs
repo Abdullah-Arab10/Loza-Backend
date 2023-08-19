@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using MimeKit.Cryptography;
+using Org.BouncyCastle.Utilities;
 using System.Runtime.CompilerServices;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -55,6 +56,16 @@ namespace Loza.Controllers
                 }
                 else
                 {
+                    var items = await _dataContext.ShoppingCarts.Where(p => p.UserId == userid).Select(p => new { p.price, p.ProductId, p.Quant }).ToListAsync();
+                    if (items.Count == 0)
+                    {
+                        return BadRequest(new OperationsResult
+                        {
+                            statusCode = 400,
+                            isError = true,
+                            Errors = new ErrorModel { Message = "No items in cart" }
+                        });
+                    }
                     check.Wallet -= total;
                     await _appDbContext.SaveChangesAsync();
 
@@ -73,7 +84,7 @@ namespace Loza.Controllers
 
 
 
-                    var items = await _dataContext.ShoppingCarts.Where(p => p.UserId == userid).Select(p => new { p.price, p.ProductId, p.Quant }).ToListAsync();
+                    
                     foreach (var item in items)
                     {
                         var prodquant = await _dataContext.Product.Where(p => p.Id == item.ProductId).FirstAsync();
@@ -101,6 +112,16 @@ namespace Loza.Controllers
 
             else
             {
+                var items1 = await _dataContext.ShoppingCarts.Where(p => p.UserId == userid).Select(p => new { p.price, p.ProductId, p.Quant }).ToListAsync();
+                if (items1.Count == 0)
+                {
+                    return BadRequest(new OperationsResult
+                    {
+                        statusCode = 400,
+                        isError = true,
+                        Errors = new ErrorModel { Message = "No items in cart" }
+                    });
+                }
                 var createorder1 = new Order
                 {
                     User_Id = userid,
@@ -115,7 +136,7 @@ namespace Loza.Controllers
 
 
 
-                var items1 = await _dataContext.ShoppingCarts.Where(p => p.UserId == userid).Select(p => new { p.price, p.ProductId, p.Quant }).ToListAsync();
+                
                 foreach (var item1 in items1)
                 {
                     var prodquant = await _dataContext.Product.Where(p => p.Id == item1.ProductId).FirstAsync();

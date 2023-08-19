@@ -180,13 +180,11 @@ namespace Loza.Controllers
                 TotalCheck = getpro.TotalCheck,
                 products = o
             };
-            Dictionary<string, object> data = new Dictionary<string, object> { { "OrderByOrderNumber", pro } };
-
             return Ok(new OperationsResult
             {
                 statusCode = 200,
                 isError = false,
-                Data = data
+                Data = pro
             });
         }
 

@@ -134,7 +134,7 @@ namespace Loza.Controllers
                 Data =  data 
             });
         }
-        [HttpDelete("Block/{Id}")]
+        [HttpDelete("Block")]
         public async Task<IActionResult> BlockUser(List<int> ids)
         {
             foreach (int id in ids)

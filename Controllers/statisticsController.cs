@@ -29,6 +29,8 @@ namespace Loza.Controllers
             var userCount = await _appDbContext.Users.CountAsync();
             var productCount = await _dataContext.Product.CountAsync();
             var orderCount = await _dataContext.Orders.CountAsync();
+            var orderReturnedCount = await _dataContext.ReturnOrders.Where(r => r.Confirmed == true).CountAsync();
+            var totalChecks = await _dataContext.Orders.SumAsync(b => b.TotalCheck);
 
             var topSoldItems = await _dataContext.OrderItems
                 .GroupBy(sale => sale.Product_Id)
@@ -74,6 +76,8 @@ namespace Loza.Controllers
                     { "userCount", userCount },
                     { "productCount", productCount },
                     { "orderCount", orderCount },
+                    { "orderReturnedCount", orderReturnedCount },
+                    { "TotalCheck", totalChecks },
                     { "topSold", topSoldProducts }
                 };
 

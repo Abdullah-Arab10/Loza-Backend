@@ -87,6 +87,21 @@ namespace Loza.Controllers
                     Errors = new ErrorModel { Message = "User not found" }
                 });
             }
+
+            // Remove existing roles from the user
+            var existingRoles = await _userManager.GetRolesAsync(user);
+            var resultRemove = await _userManager.RemoveFromRolesAsync(user, existingRoles);
+
+            if (!resultRemove.Succeeded)
+            {
+                return BadRequest(new OperationsResult
+                {
+                    statusCode = 400,
+                    isError = true,
+                    Errors = new ErrorModel { Message = $"Failed to remove existing roles from the user" }
+                });
+            }
+
             var role = await _roleManager.RoleExistsAsync(RoleName);
             if (!role)
             {
@@ -96,8 +111,9 @@ namespace Loza.Controllers
                     isError = false
                 });
             }
-            var result = await _userManager.AddToRoleAsync(user, RoleName);
-            if (result.Succeeded)
+
+            var resultAdd = await _userManager.AddToRoleAsync(user, RoleName);
+            if (resultAdd.Succeeded)
             {
                 return Ok(new OperationsResult
                 {
@@ -105,11 +121,12 @@ namespace Loza.Controllers
                     isError = false
                 });
             }
+
             return BadRequest(new OperationsResult
             {
                 statusCode = 400,
                 isError = true,
-                Errors = new ErrorModel { Message = $"{user} han not been added to the Role{RoleName}" }
+                Errors = new ErrorModel { Message = $"{user} has not been added to the Role {RoleName}" }
             });
         }
         [HttpPost("Remove_User_From_Role")]

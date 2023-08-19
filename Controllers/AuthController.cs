@@ -151,18 +151,19 @@ namespace Loza.Controllers
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim("Id",user.Id.ToString()),
-                    new Claim(JwtRegisteredClaimNames.Sub,user.FirstName),
-                    new Claim(JwtRegisteredClaimNames.Sub,user.LastName),
-                    new Claim(JwtRegisteredClaimNames.Email,user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.Iat,DateTime.Now.ToUniversalTime().ToString())
+                    new Claim("Id", user.Id.ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.FirstName),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.LastName),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Iat, DateTime.Now.ToUniversalTime().ToString())
                 };
 
                 foreach (var userRole in userRoles)
                 {
-                    authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+                    authClaims.Add(new Claim("role", userRole));
                 }
+
                 var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JwtConfig:Secret").Value));
 
                 var new_token = new JwtSecurityToken(
@@ -170,15 +171,17 @@ namespace Loza.Controllers
                     claims: authClaims,
                     signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
                 var jwtToken = new JwtSecurityTokenHandler().WriteToken(new_token);
+
                 Dictionary<string, object> data = new Dictionary<string, object>
                     {
                         { "token", jwtToken }
                     };
+
                 return Ok(new OperationsResult
                 {
-                    statusCode= 200,
-                    isError= false,
-                    Data = data 
+                    statusCode = 200,
+                    isError = false,
+                    Data = data
                 });
 
             }
